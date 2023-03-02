@@ -6,3 +6,6 @@ role : backend engineer
 
 Seong Hak Gweon
 role: backend enginner
+
+Park Chan Bin
+role: frontend engineer
