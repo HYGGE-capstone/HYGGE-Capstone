@@ -141,6 +141,10 @@ hr {
 .auth-wrapper .button {
   -webkit-appearance: none;
 }
+.loginPage-button {
+  display: flex;
+  justify-content: space-between;
+}
 
 
 
