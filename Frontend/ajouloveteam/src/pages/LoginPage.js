@@ -23,6 +23,11 @@ function LoginPage() {
   const changeEmail = (event) => {
     setEmail(event.target.value);
   };
+
+  const loginTrial = (event) => {
+    
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -45,7 +50,7 @@ function LoginPage() {
           value={pwd}
           onChange={changePwd}
         />
-        <button className="button" type="button">
+        <button className="button" type="button" onClick={loginTrial}>
           제출
         </button>
         <div className="loginPage-button">
