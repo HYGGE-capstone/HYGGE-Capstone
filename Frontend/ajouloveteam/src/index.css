@@ -146,5 +146,241 @@ hr {
   justify-content: space-between;
 }
 
+.main-top {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #072e5d;
+}
+.main-wrapper {
+  
+}
+.top-name {
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+}
+.main-mid {
 
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  background-color: #f7f7f7;
+}
 
+.mid-top-wrapper {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.left-top-wrapper {
+  width: 35%;
+}
+
+.jongbo-section {
+  background-color: white;
+  height: 150px;
+  margin: 20px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.jongbo-text-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.jongbo-button-wrapper {
+  margin-top: 10px;
+}
+.jongbo-button-wrapper Button {
+  width: 100px;
+  height: 30px;
+}
+
+.right-top-wrapper {
+  width: 65%;
+}
+
+.search-section {
+  height: 120px;
+  background-color: white;
+  margin: 20px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+
+.search-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.mid-down-wrapper {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+}
+.left-down-wrapper {
+  width: 35%;
+}
+.gudok-section {
+  margin: 20px;
+}
+.subject {
+  height: 70px;
+  background-color: white;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.subject-name {
+  font-weight: bold;
+  margin-top: 3px;
+}
+.right-down-wrapper {
+  width: 65%
+}
+.team-section {
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 90px;
+  overflow: hidden;
+  background-color: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.team-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.team-top {
+  display: flex;
+  flex-direction: row;
+  height: 45px;
+  border-bottom: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+
+.team-down {
+  display: flex;
+  flex-direction: row;
+  height: 45px;
+}
+.team-role {
+  width:20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-right: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.team-button {
+  width:80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.team-name {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-right: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.team-real-name {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.subject-section {
+  margin: 20px;
+  background-color: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.main-mid Button {
+  border-radius: 0;
+  border-width: 2px;
+}
+
+.myjongbo-arrow-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.myjongbo-resume-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+.myjongbo-resume-wrapper::-webkit-scrollbar {
+  display:none;
+}
+.myjongbo-resume {
+  width: 90%;
+  height: 180px;
+  overflow-y:scroll;
+  -ms-overflow-style: none;
+  margin: 5px;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.myjongbo-resume::-webkit-scrollbar {
+  display:none;
+}
+@media only screen and (max-width: 783px) {
+  .mid-top-wrapper {
+    flex-direction: column;
+  }
+  .mid-down-wrapper {
+    flex-direction: column;
+  }
+  .left-down-wrapper {
+    width: 90%;
+  }
+  .left-top-wrapper {
+    width: 90%;
+  }
+  .right-down-wrapper {
+    width: 90%;
+  }
+  .right-top-wrapper {
+    width: 90%;
+  }
+}
