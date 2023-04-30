@@ -61,6 +61,12 @@ function PersonalPage() {
   const changeResumeContent = (e) => {
     setResumeContent(e.target.value);
   };
+  const resumeDelete = () => {
+    const tempResume = [...resume];
+    tempResume.splice(index, 1);
+    setResume(tempResume);
+    handleClose();
+  };
   const resumeChange = () => {
     const changeResume = {
       id: id,
@@ -225,6 +231,7 @@ function PersonalPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={resumeChange}>수정</Button>
+          <Button onClick={resumeDelete}>삭제</Button>
           <Button onClick={handleClose}>닫기</Button>
         </DialogActions>
       </Dialog>
