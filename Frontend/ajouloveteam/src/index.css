@@ -154,9 +154,7 @@ hr {
   align-items: center;
   background-color: #072e5d;
 }
-.main-wrapper {
-  
-}
+
 .top-name {
   color: white;
   font-size: 25px;
@@ -384,3 +382,120 @@ hr {
     width: 90%;
   }
 }
+
+.personal-top {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #072e5d;
+}
+
+.personal-top-name {
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+}
+.personal-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7;
+}
+.personal-info-section {
+  background-color: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  width: 80%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.personal-info-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.personal-info-jemok {
+  font-size: 25px;
+}
+.personal-info-wrapper {
+  margin: 15px;
+}
+.personal-content-wrapper {
+  display: flex;
+}
+.personal-info-title {
+  width: 20%;
+  margin-top: 10px;
+  background-color: #C8CDE3;
+}
+.info-title {
+  margin: 7px;
+}
+.personal-info-content {
+  width: 80%;
+  margin-top: 10px;
+  background-color: #DEE2EF;
+}
+.info-content {
+  margin: 7px;
+}
+.personal-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.personal-button-wrapper Button {
+  border-radius: 0;
+  border-width: 2px;
+}
+
+.personal-resume-section {
+  background-color: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  width: 80%;
+}
+
+.personal-resume-wrapper {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.personal-resume-jemok {
+  font-size: 25px;
+}
+.personal-resume-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.personal-resume-title {
+  width: 80%;
+  margin-top: 10px;
+  
+  
+}
+.resume-info-title {
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  background-color: #C8CDE3;
+  padding: 10px;
+  margin: 7px;
+}
+
+.personal-resume-top {
+  display: flex;
+  justify-content: space-between;
+}
+.personal-resume-top Button {
+  border-radius: 0;
+  border-width: 2px;
+}
+

@@ -9,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
+import { useNavigate } from "react-router";
 
 function MainPage() {
   const [open, setOpen] = React.useState(false);
@@ -19,6 +20,13 @@ function MainPage() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const navigate = useNavigate();
+
+  const navigateToPersonal = () => {
+    navigate("/personal");
+  };
+
   var gudok = [
     {
       id: 1,
@@ -114,7 +122,7 @@ function MainPage() {
                   <Button
                     variant="outlined"
                     style={{ marginRight: "15px" }}
-                    onClick={handleClickOpen}
+                    onClick={navigateToPersonal}
                   >
                     내 정보
                   </Button>
