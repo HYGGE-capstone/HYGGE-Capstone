@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import axios from "axios";
 
 function LoginPage() {
   const [id, setId] = useState("");
@@ -24,9 +25,7 @@ function LoginPage() {
     setEmail(event.target.value);
   };
 
-  const loginTrial = (event) => {
-    
-  };
+  const loginTrial = (event) => {};
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -35,6 +34,25 @@ function LoginPage() {
   const handleClose = () => {
     setOpen(false);
   };
+  const login = async () => {
+    const user = {
+      loginId: id,
+      password: pwd,
+    };
+    await axios
+      .post("http://43.201.179.98:8080/api/v1/login", user)
+      .then((resp) => {
+        alert(id + "님 로그인 되었습니다");
+        setId("");
+        setPwd("");
+      })
+      .catch((err) => {
+        alert(err.response);
+        setId("");
+        setPwd("");
+      });
+  };
+
   return (
     <div className="auth-wrapper">
       <div style={{ textAlign: "center" }}>
@@ -50,7 +68,7 @@ function LoginPage() {
           value={pwd}
           onChange={changePwd}
         />
-        <button className="button" type="button" onClick={loginTrial}>
+        <button className="button" type="button" onClick={login}>
           제출
         </button>
         <div className="loginPage-button">
