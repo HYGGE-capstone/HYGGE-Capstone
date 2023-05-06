@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -15,6 +15,8 @@ function LoginPage() {
   const [pwd, setPwd] = useState("");
   const [email, setEmail] = useState("");
   const [open, setOpen] = React.useState(false);
+
+  const navigate = useNavigate();
   const changeId = (event) => {
     setId(event.target.value);
   };
@@ -40,14 +42,15 @@ function LoginPage() {
       password: pwd,
     };
     await axios
-      .post("http://43.201.179.98:8080/api/v1/login", user)
+      .post("http://43.201.179.98:8080/api/v1/member/login", user)
       .then((resp) => {
         alert(id + "님 로그인 되었습니다");
+        console.log(resp);
         setId("");
         setPwd("");
+        navigate("/main");
       })
       .catch((err) => {
-        alert(err.response);
         setId("");
         setPwd("");
       });

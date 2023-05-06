@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -8,6 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useForm } from "react-hook-form";
 
 function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -16,45 +17,37 @@ function RegisterPage() {
   const [pwd, setPwd] = useState("");
   const [pwdCheck, setPwdCheck] = useState("");
   const [idCanUsable, setidCanUsable] = useState(false);
-  const [pwdNotDup, setPwdNotDup] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
   const [open, setOpen] = useState(false);
-  const [userEmailVer, setUserEmailVer] = useState(0);
-  const [validEmailVer, setValidEmailVer] = useState(0);
+  const [userEmailVer, setUserEmailVer] = useState("");
+  const [validEmailVer, setValidEmailVer] = useState("");
+  const [errorFromSubmit, setErrorFromSubmit] = useState("");
+  const [schoolId, setSchoolId] = useState(0);
 
   useEffect(() => {
     setidCanUsable(false);
-    setPwdNotDup(false);
   }, []);
 
-  const emailRegEx =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[ac]{2}.[kr]{2}$/i;
+  const {
+    register,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  const password = useRef();
+  password.current = watch("password");
+
+  const userEmail = watch("users_email");
+  const userId = watch("users_id");
+  const userPassword = watch("password");
+  const userNickname = watch("nickname");
 
   const navigate = useNavigate();
 
-  const emailCheckTest = (emailInput) => {
-    if (emailRegEx.test(emailInput)) {
-      return true;
-    } else {
-      window.alert("올바른 대학교 이메일을 입력해주세요.");
-      setEmail("");
-      return false;
-    }
-  };
-
-  const pwdCheckTest = (pwdInput, pwdCheckInput) => {
-    if (pwdInput === pwdCheckInput) {
-      return true;
-    } else {
-      window.alert("비밀번호를 다시 확인해주세요.");
-      setPwd("");
-      setPwdCheck("");
-      return false;
-    }
-  };
-
   const changeEmail = (event) => {
     setEmail(event.target.value);
+    console.log(...register("users_email"));
+    console.log(watch);
   };
 
   const changeId = (event) => {
@@ -72,25 +65,23 @@ function RegisterPage() {
   const changePwdCheck = (event) => {
     setPwdCheck(event.target.value);
   };
+
+  const changeUserEmailVer = (event) => {
+    setUserEmailVer(event.target.value);
+  };
   const URL = "";
 
   const checkIdCanUsable = async (e) => {
     e.preventDefault();
     await axios
-      .get(URL + `users/idCanUsable/${id}`) //임시
+      .get(`http://43.201.179.98:8080/api/v1/member/signup/loginId/${userId}`) //임시
       .then((resp) => {
-        if (resp.data.data === true) {
-          setidCanUsable(true);
-          alert("사용 가능한 아이디입니다.");
-        }
-        if (resp.data.data === false) {
-          setidCanUsable(false);
-          setId("");
-          alert("중복된 아이디입니다.");
-        }
+        alert("사용 가능한 아이디입니다.");
+        setidCanUsable(true);
       })
       .catch((err) => {
-        alert("아이디 중복 조회 실패!");
+        alert("사용 불가능한 아이디입니다.");
+        setidCanUsable(false);
       });
   };
 
@@ -102,39 +93,49 @@ function RegisterPage() {
     setOpen(false);
   };
 
-  const emailVerGen = async (e) => {
-    let min = 100000;
-    let max = 999999;
-    let randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    setValidEmailVer(randomNum);
-    console.log(randomNum);
+  const emailVerCheck = async (e) => {
     await axios
-      .post(URL + `users/signup/ver`, {
-        email: email,
-        emailVer: randomNum,
-      })
+      .post(
+        `http://43.201.179.98:8080/api/v1/member/signup/email/auth?to=${userEmail}`
+      ) //임시
       .then((resp) => {
-        if (resp.data.data === true) {
-          // 임시
-          alert("이메일 인증번호가 발송되었습니다.");
-        }
+        console.log(resp.data.code);
+        setValidEmailVer(resp.data.code);
+        setSchoolId(resp.data.schoolId);
+        handleClickOpen();
+      })
+      .catch((err) => {});
+  };
+
+  const onSubmit = async () => {
+    const user = {
+      loginId: userId,
+      email: userEmail,
+      password: userPassword,
+      nickname: userNickname,
+      schoolId: schoolId,
+    };
+
+    await axios
+      .post(`http://43.201.179.98:8080/api/v1/member/signup`, user) //임시
+      .then((resp) => {
+        alert("회원가입 완료!");
+        navigate("/login");
       })
       .catch((err) => {
-        alert("이메일 인증번호 발송 실패!");
+        alert("회원가입 실패!");
       });
   };
 
-  const emailVerCheck = (e) => {
-    console.log(userEmailVer);
-    console.log(validEmailVer);
-    if (userEmailVer == validEmailVer) {
+  const emailCodeCheck = () => {
+    if (userEmailVer === validEmailVer) {
+      alert("이메일 인증 완료!");
       setValidEmail(true);
-      alert("이메일 인증이 완료되었습니다.");
+      handleClose();
     } else {
-      alert("이메일 인증번호를 다시 확인해주세요.");
+      alert("이메일 인증 실패!");
     }
   };
-
   return (
     <div className="auth-wrapper">
       <div style={{ textAlign: "center" }}>
@@ -143,13 +144,7 @@ function RegisterPage() {
       <form>
         <div className="email">
           <label>Email</label>
-          <Button
-            className="emailCheck"
-            onClick={(event) => {
-              handleClickOpen();
-              emailVerGen();
-            }}
-          >
+          <Button className="emailCheck" onClick={emailVerCheck}>
             이메일 인증
           </Button>
           <Dialog open={open} onClose={handleClose}>
@@ -163,63 +158,100 @@ function RegisterPage() {
                 autoFocus
                 margin="dense"
                 id="name"
-                label="인증번호 6자리"
-                type="number"
+                label="인증번호"
+                type="text"
                 fullWidth
                 variant="standard"
-                onChange={(event) => {
-                  setUserEmailVer(event.target.value);
-                }}
+                value={userEmailVer}
+                onChange={changeUserEmailVer}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>취소</Button>
-              <Button
-                onClick={(event) => {
-                  emailVerCheck();
-                  handleClose();
-                }}
-              >
-                인증하기
-              </Button>
+              <Button onClick={emailCodeCheck}>인증하기</Button>
             </DialogActions>
           </Dialog>
         </div>
       </form>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input
           name="users_email"
           type="text"
-          value={email}
+          //value={email}
           onChange={changeEmail}
+          {...register("users_email", {
+            required: true,
+            pattern:
+              /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[ac]{2}.[kr]{2}$/i,
+          })}
         />
+        {errors.users_email && errors.users_email.type === "required" && (
+          <p>This email field is required</p>
+        )}
+        {errors.users_email && errors.users_email.type === "pattern" && (
+          <p>This email is not match ajou mail</p>
+        )}
         <div className="id">
           <label>ID</label>
           <button className="idCheck" onClick={checkIdCanUsable}>
             아이디 중복 확인
           </button>
         </div>
-        <input name="users_id" type="text" value={id} onChange={changeId} />
+        <input
+          name="users_id"
+          type="text"
+          //value={id}
+          //onChange={changeId}
+          {...register("users_id", { required: true })}
+        />
+        {errors.users_id && errors.users_id.type === "required" && (
+          <p>This id field is required</p>
+        )}
         <label>nickname</label>
-        <input name="nickname" value={nickname} onChange={changeNickname} />
+        <input
+          name="nickname"
+          //value={nickname}
+          //onChange={changeNickname}
+          {...register("nickname", { required: true })}
+        />
+        {errors.nickname && errors.nickname.type === "required" && (
+          <p>This nickname field is required</p>
+        )}
         <label>Password</label>
         <input
           name="password"
           type="password"
-          value={pwd}
-          onChange={changePwd}
+          //value={pwd}
+          //onChange={changePwd}
+          {...register("password", { required: true })}
         />
+        {errors.password && errors.password.type === "required" && (
+          <p>This password field is required</p>
+        )}
         <label>Password Check</label>
         <input
           name="passwordCheck"
-          type="text"
-          value={pwdCheck}
-          onChange={changePwdCheck}
+          type="password"
+          //value={pwdCheck}
+          //onChange={changePwdCheck}
+          {...register("passwordCheck", {
+            required: true,
+            validate: (value) => value === password.current,
+          })}
         />
+        {errors.passwordCheck && errors.passwordCheck.type === "required" && (
+          <p>This password Check field is required</p>
+        )}
+        {errors.passwordCheck && errors.passwordCheck.type === "validate" && (
+          <p>The passwords do not match password Check</p>
+        )}
+
+        {errorFromSubmit && <p>{errorFromSubmit}</p>}
         <button
           className="button"
-          type="button"
-          disabled={!(idCanUsable && pwdNotDup && validEmail)}
+          type="submit"
+          onClick={handleSubmit(onSubmit)}
+          disabled={!(idCanUsable && validEmail)}
         >
           제출
         </button>
