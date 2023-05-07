@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -11,8 +11,65 @@ import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 import { useNavigate } from "react-router";
 
+const wholeTextArray = [
+  "apple",
+  "banana",
+  "coding",
+  "javascript",
+  "java",
+  "juice",
+  "jupitor",
+  "원티드",
+  "프리온보딩",
+  "프론트엔드",
+];
+
 function MainPage() {
   const [open, setOpen] = React.useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [isHaveInputValue, setIsHaveInputValue] = useState(false);
+  const [dropDownList, setDropDownList] = useState(wholeTextArray);
+  const [dropDownItemIndex, setDropDownItemIndex] = useState(-1);
+  const showDropDownList = () => {
+    if (inputValue === "") {
+      setIsHaveInputValue(false);
+      setDropDownList([]);
+    } else {
+      const choosenTextList = wholeTextArray.filter((textItem) =>
+        textItem.includes(inputValue)
+      );
+      setDropDownList(choosenTextList);
+    }
+  };
+
+  const changeInputValue = (event) => {
+    setInputValue(event.target.value);
+    setIsHaveInputValue(true);
+  };
+
+  const clickDropDownItem = (clickedItem) => {
+    setInputValue(clickedItem);
+    setIsHaveInputValue(false);
+  };
+
+  const handleDropDownKey = (event) => {
+    //input에 값이 있을때만 작동
+    if (isHaveInputValue) {
+      if (
+        event.key === "ArrowDown" &&
+        dropDownList.length - 1 > dropDownItemIndex
+      ) {
+        setDropDownItemIndex(dropDownItemIndex + 1);
+      }
+
+      if (event.key === "ArrowUp" && dropDownItemIndex >= 0)
+        setDropDownItemIndex(dropDownItemIndex - 1);
+      if (event.key === "Enter" && dropDownItemIndex >= 0) {
+        clickDropDownItem(dropDownList[dropDownItemIndex]);
+        setDropDownItemIndex(-1);
+      }
+    }
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -26,6 +83,8 @@ function MainPage() {
   const navigateToPersonal = () => {
     navigate("/personal");
   };
+
+  useEffect(showDropDownList, [inputValue]);
 
   var gudok = [
     {
@@ -135,11 +194,32 @@ function MainPage() {
                 <div className="search-wrapper">
                   <div className="search-field">
                     <TextField
+                      fullWidth
                       id="standard-basic"
                       label="과목이름"
                       variant="standard"
-                      style={{ width: "450px" }}
+                      value={inputValue}
+                      onChange={changeInputValue}
+                      onKeyUp={handleDropDownKey}
                     />
+                    {isHaveInputValue && (
+                      <div className="dropDownBox">
+                        {dropDownList.map((dropDownItem, dropDownIndex) => {
+                          return (
+                            <div
+                              className="dropDownItem"
+                              key={dropDownIndex}
+                              onClick={() => clickDropDownItem(dropDownItem)}
+                              onMouseOver={() =>
+                                setDropDownItemIndex(dropDownIndex)
+                              }
+                            >
+                              {dropDownItem}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="search-button">
@@ -147,7 +227,7 @@ function MainPage() {
                     variant="outlined"
                     style={{
                       marginRight: "15px",
-                      marginTop: "10px",
+                      marginTop: "40px",
                       marginLeft: "20px",
                     }}
                   >
