@@ -30,6 +30,11 @@ function MainPage() {
   const [isHaveInputValue, setIsHaveInputValue] = useState(false);
   const [dropDownList, setDropDownList] = useState(wholeTextArray);
   const [dropDownItemIndex, setDropDownItemIndex] = useState(-1);
+  const [select, setSelect] = useState("");
+  const handleClick = (id) => {
+    setSelect(id);
+    // 가입 로직 실행
+  };
   const showDropDownList = () => {
     if (inputValue === "") {
       setIsHaveInputValue(false);
@@ -241,7 +246,10 @@ function MainPage() {
             <div className="left-down-wrapper">
               <div className="gudok-section">
                 {gudok.map((data) => (
-                  <div className="subject">
+                  <div
+                    onClick={() => handleClick(data.id)}
+                    className={`${select === data.id ? "select" : "subject"}`}
+                  >
                     <div className="subject-jongbo">
                       <div className="subject-time">
                         {data.year}년 {data.semester}학기
