@@ -10,6 +10,9 @@ import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import { useRecoilState } from "recoil";
+import { useridState, userpwdState } from "../recoil/atom";
+import axios from "axios";
 
 const wholeTextArray = [
   "apple",
@@ -26,14 +29,125 @@ const wholeTextArray = [
 
 function MainPage() {
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isHaveInputValue, setIsHaveInputValue] = useState(false);
   const [dropDownList, setDropDownList] = useState(wholeTextArray);
   const [dropDownItemIndex, setDropDownItemIndex] = useState(-1);
   const [select, setSelect] = useState("");
-  const handleClick = (id) => {
+  const [select2, setSelect2] = useState("");
+  const [subjectSection, setSubjectSection] = useState(-1);
+  const [teamTopButton, setTeamTopButton] = useState(1);
+  const [selectTeamName, setSelectTeamName] = useState("HYGGE");
+  const [teamId, setTeamId] = useState();
+  const [teamSubject, setTeamSubject] = useState("");
+  const [teamMaxNum, setTeamMaxNum] = useState("");
+  const [teamName, setTeamName] = useState("");
+  const [userId, setUserId] = useRecoilState(useridState);
+  const [userPwd, setUserPwd] = useRecoilState(userpwdState);
+  const [subjectSearchResult, setSubjectSearchResult] = useState([
+    "캡스톤디자인1",
+    "캡스톤디자인2",
+    "캡스톤디자인3",
+    "캡스톤디자인4",
+    "캡스톤디자인5",
+  ]);
+  const [teamInfo, setTeamInfo] = useState([
+    {
+      id: 1,
+      name: "이지수",
+      stack: "JAVA, C, Spring, Backend",
+    },
+    {
+      id: 2,
+      name: "권성학",
+      stack: "Node.js, React, Frontend",
+    },
+    {
+      id: 3,
+      name: "송명준",
+      stack: "Cloud, AWS, DevOps",
+    },
+  ]);
+  const [teamSupplyInfo, setTeamSupplyInfo] = useState([
+    {
+      id: 1,
+      name: "이지수",
+      stack: "JAVA, C, Spring, Backend",
+    },
+    {
+      id: 2,
+      name: "권성학",
+      stack: "Node.js, React, Frontend",
+    },
+    {
+      id: 3,
+      name: "송명준",
+      stack: "Cloud, AWS, DevOps",
+    },
+  ]);
+  const [subTeamInfo, setSubTeamInfo] = useState([
+    {
+      id: 1,
+      name: "HYGGE",
+      guamok: "캡스톤디자인",
+      subject: "팀원 매칭 프로젝트",
+      curNum: 4,
+      maxNum: 5,
+    },
+    {
+      id: 2,
+      name: "뉴진스",
+      guamok: "캡스톤디자인",
+      subject: "주제 미정",
+      curNum: 1,
+      maxNum: 4,
+    },
+  ]);
+  const [team, setTeam] = useState([
+    {
+      id: 11,
+      subject: "캡스톤디자인",
+      name: "아주좋은팀",
+    },
+    {
+      id: 22,
+      subject: "캡스톤디자인",
+      name: "아주좋은팀",
+    },
+    {
+      id: 33,
+      subject: "캡스톤디자인",
+      name: "아주좋은팀",
+    },
+  ]);
+  const handleClick = (id, name) => {
     setSelect(id);
+    setSelectTeamName(name);
+    setSubjectSection(1);
     // 가입 로직 실행
+  };
+  const handleClick2 = (id, name) => {
+    setSelect(id);
+    setSelectTeamName(name);
+    setSubjectSection(2);
+    // 가입 로직 실행
+  };
+  const changeTeamId = (event) => {
+    setTeamId(event.target.value);
+  };
+  const changeTeamName = (event) => {
+    setTeamName(event.target.value);
+  };
+  const changeTeamSubject = (event) => {
+    setTeamSubject(event.target.value);
+  };
+  const changeTeamMaxNum = (event) => {
+    setTeamMaxNum(event.target.value);
+  };
+  const subjectSearchClick = (name) => {
+    setSubjectSection(2);
+    setSelectTeamName(name);
   };
   const showDropDownList = () => {
     if (inputValue === "") {
@@ -83,14 +197,65 @@ function MainPage() {
     setOpen(false);
   };
 
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+  };
+
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
   const navigate = useNavigate();
 
   const navigateToPersonal = () => {
     navigate("/personal");
   };
 
+  const makeTeam = () => {
+    const newTeam = {
+      id: teamId,
+      subject: selectTeamName,
+      name: teamName,
+    };
+    const tempTeam = [...team];
+    tempTeam.splice(tempTeam.length, 0, newTeam);
+    setTeam(tempTeam);
+
+    const newSubTeamInfo = {
+      id: teamId,
+      name: teamName,
+      guamok: selectTeamName,
+      subject: teamSubject,
+      curNum: 1,
+      maxNum: teamMaxNum,
+    };
+    const tempSubTeamInfo = [...subTeamInfo];
+    tempSubTeamInfo.splice(tempSubTeamInfo.length, 0, newSubTeamInfo);
+    setSubTeamInfo(tempSubTeamInfo);
+
+    handleClose2();
+  };
+
+  const subSearch = async (e) => {
+    await axios
+      .get(
+        `http://43.201.179.98:8080/api/v1/subject/search?query=${inputValue}`
+      ) //임시
+      .then((resp) => {
+        console.log(resp.data.subjects);
+        setSubjectSection(0);
+        setSubjectSearchResult(resp.data.subjects);
+      })
+      .catch((err) => {});
+  };
   useEffect(showDropDownList, [inputValue]);
 
+  var subjectSearch = [
+    "캡스톤디자인1",
+    "캡스톤디자인2",
+    "캡스톤디자인3",
+    "캡스톤디자인4",
+    "캡스톤디자인5",
+  ];
   var gudok = [
     {
       id: 1,
@@ -178,8 +343,7 @@ function MainPage() {
                 <div className="jongbo-wrapper">
                   <div className="jongbo-picture"></div>
                   <div className="jongbo-text-wrapper">
-                    <div className="jongbo-text-name">이지수 님</div>
-                    <div className="jongbo-text-j=hakgoa">소프트웨어학과</div>
+                    <div className="jongbo-text-name">{userId}</div>
                   </div>
                 </div>
                 <div className="jongbo-button-wrapper">
@@ -235,8 +399,9 @@ function MainPage() {
                       marginTop: "40px",
                       marginLeft: "20px",
                     }}
+                    onClick={subSearch}
                   >
-                    구독
+                    검색
                   </Button>
                 </div>
               </div>
@@ -245,9 +410,21 @@ function MainPage() {
           <div className="mid-down-wrapper">
             <div className="left-down-wrapper">
               <div className="gudok-section">
+                {team.map((data) => (
+                  <div
+                    onClick={() => handleClick(data.id, data.name)}
+                    className={`${select === data.id ? "select" : "team"}`}
+                  >
+                    <div className="team-jongbo">
+                      <div className="team-jongbo-time">{data.subject}</div>
+                      <div className="team-jongbo-name">{data.name}</div>
+                    </div>
+                    <div className="subject-button"></div>
+                  </div>
+                ))}
                 {gudok.map((data) => (
                   <div
-                    onClick={() => handleClick(data.id)}
+                    onClick={() => handleClick2(data.id, data.name)}
                     className={`${select === data.id ? "select" : "subject"}`}
                   >
                     <div className="subject-jongbo">
@@ -268,74 +445,214 @@ function MainPage() {
               </div>
             </div>
             <div className="right-down-wrapper">
-              <div className="team-section">
-                <div className="team-wrapper">
-                  <div className="team-top">
-                    <div className="team-name">팀 이름</div>
-                    <div className="team-real-name">HYGGE</div>
-                  </div>
-                  <div className="team-down">
-                    <div className="team-role">팀장</div>
-                    <div className="team-button">
-                      <div className="team-information-button">
-                        <Button variant="outlined" style={{ width: "100px" }}>
-                          팀 정보
-                        </Button>
+              <div className="subject-section">
+                {subjectSection === 0 && (
+                  <div className="subject-search-result">
+                    {subjectSearchResult.map((data) => (
+                      <div className="subject-search-com">
+                        <div
+                          className="subject-search-name"
+                          onClick={() => subjectSearchClick(data.name)}
+                        >
+                          {data.name} {data.code}
+                          <div className="subject-search-prof">
+                            {data.pname}
+                          </div>
+                        </div>
+                        <div className="subject-search-button">
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                          >
+                            구독
+                          </Button>
+                        </div>
                       </div>
-                      <div className="team-chatting-button">
+                    ))}
+                  </div>
+                )}
+                {subjectSection === 1 && (
+                  <div className="team-info-result">
+                    <div className="team-info-top">
+                      <div className="team-top-name">팀 {selectTeamName}</div>
+                      <div className="team-top-button">
                         <Button
                           variant="outlined"
-                          style={{ marginLeft: "20px", width: "100px" }}
+                          style={{ marginLeft: "20px" }}
+                          onClick={() => {
+                            setTeamTopButton(0);
+                          }}
                         >
-                          팀원 채팅
+                          팀 정보 보기
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          style={{ marginLeft: "20px" }}
+                          onClick={() => {
+                            setTeamTopButton(1);
+                          }}
+                        >
+                          팀 지원자 보기
                         </Button>
                       </div>
                     </div>
+                    {subjectSection === 1 &&
+                      teamTopButton === 0 &&
+                      teamInfo.map((data) => (
+                        <div className="team-info-com">
+                          <div className="team-info-name">{data.name}</div>
+                          <div className="team-info-stack">{data.stack}</div>
+                          <div className="team-info-button">
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                            >
+                              쪽지
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                            >
+                              이력서 보기
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    {subjectSection === 1 &&
+                      teamTopButton === 1 &&
+                      teamInfo.map((data) => (
+                        <div className="team-info-com">
+                          <div className="team-info-name">{data.name}</div>
+                          <div className="team-info-stack">{data.stack}</div>
+                          <div className="team-info-button">
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                            >
+                              수락
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                            >
+                              거절
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                            >
+                              쪽지
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                            >
+                              이력서 보기
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
                   </div>
-                </div>
-              </div>
-              <div className="subject-section">
-                <div className="subject-soga">
-                  <div className="soga-text"></div>
-                </div>
-                <div className="subject-content-wrapper">
-                  <div className="subject-content-module">
-                    <div className="subject-content-name"></div>
-                    <div className="subject-content-joje"></div>
-                    <div className="subject-content-button">
-                      <div className="subject-content-button-wrapper">
-                        <div className="scbw-jiwon"></div>
-                        <div className="scbw-jjokji"></div>
-                        <div className="scbw-jongo"></div>
+                )}
+                {subjectSection === 2 && (
+                  <div className="sub-team-result">
+                    <div className="sub-team-top">
+                      <div className="sub-top-name">
+                        {selectTeamName}
+                        <div className="sub-top-text">에서 모집중인 팀</div>
+                      </div>
+                      <div className="sub-top-button">
+                        <Button
+                          variant="outlined"
+                          style={{ marginRight: "50px" }}
+                          onClick={handleClickOpen2}
+                        >
+                          팀 생성
+                        </Button>
                       </div>
                     </div>
+                    {subTeamInfo.map((data) => (
+                      <div className="sub-team-com">
+                        <div className="sub-team-name">{data.name}</div>
+                        <div className="sub-team-sub">{data.subject}</div>
+                        <div className="sub-team-num">
+                          {data.curNum}/{data.maxNum}
+                        </div>
+                        <div className="sub-team-button">
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                          >
+                            지원
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                          >
+                            쪽지
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                          >
+                            정보보기
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
+
+            <Dialog
+              open={open2}
+              onClose={handleClose2}
+              PaperProps={{ sx: { width: "60%", height: "40%" } }}
+            >
+              <DialogTitle>팀 생성</DialogTitle>
+              <DialogContent>
+                <TextField
+                  id="outlined-textarea"
+                  value={teamId}
+                  onChange={changeTeamId}
+                  placeholder="팀 ID"
+                  style={{ width: "100%" }}
+                  multiline
+                />
+                <TextField
+                  id="outlined-textarea"
+                  value={teamName}
+                  onChange={changeTeamName}
+                  placeholder="팀 이름"
+                  style={{ width: "100%" }}
+                  multiline
+                />
+                <TextField
+                  id="outlined-textarea"
+                  value={teamSubject}
+                  onChange={changeTeamSubject}
+                  placeholder="팀 주제"
+                  style={{ width: "100%" }}
+                  multiline
+                />
+                <TextField
+                  id="outlined-textarea"
+                  value={teamMaxNum}
+                  onChange={changeTeamMaxNum}
+                  placeholder="팀 인원수"
+                  style={{ width: "100%" }}
+                  multiline
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={makeTeam}>확인</Button>
+                <Button onClick={handleClose2}>닫기</Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </div>
       </div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        PaperProps={{ sx: { width: "60%", height: "40%" } }}
-      >
-        <DialogTitle>내 정보</DialogTitle>
-        <DialogContent>
-          <div className="myjongbo-wrapper">
-            <div className="myjongbo-resume-wrapper">
-              {resume.map((data) => (
-                <div className="myjongbo-resume">{data.content}</div>
-              ))}
-            </div>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>확인</Button>
-          <Button onClick={handleClose}>닫기</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }

@@ -9,12 +9,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { useridState, userpwdState } from "../recoil/atom";
 
 function LoginPage() {
   const [id, setId] = useState("");
   const [pwd, setPwd] = useState("");
   const [email, setEmail] = useState("");
   const [open, setOpen] = React.useState(false);
+  const [userId, setUserId] = useRecoilState(useridState);
+  const [userPwd, setUserPwd] = useRecoilState(userpwdState);
 
   const navigate = useNavigate();
   const changeId = (event) => {
@@ -48,6 +52,8 @@ function LoginPage() {
         console.log(resp);
         setId("");
         setPwd("");
+        setUserId(id);
+        setUserPwd(pwd);
         navigate("/main");
       })
       .catch((err) => {
