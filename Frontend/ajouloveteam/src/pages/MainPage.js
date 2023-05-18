@@ -851,13 +851,12 @@ function MainPage() {
                 {subjectSection === 0 && (
                   <div className="subject-search-result">
                     {subjectSearchResult.map((data) => (
-                      <div className="subject-search-com">
+                      <div className="subject-search-com" key={data.code}>
                         <div
                           className="subject-search-name"
                           onClick={() =>
                             subjectSearchClick(data.name, data.subjectId)
                           }
-                          key={data.subjectId}
                         >
                           {data.name} ({data.code})
                           <div className="subject-search-prof">

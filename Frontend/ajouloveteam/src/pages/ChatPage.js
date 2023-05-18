@@ -97,12 +97,9 @@ function ChatPage() {
           <div className="chat-main-mid">
             <div className="chat-mid-wrapper">
               <div className="chat-message">
-                {chatMessage.map((data) => {
+                {chatMessage.map((data, index) => {
                   return (
-                    <div
-                      className="chat-message-wrapper"
-                      key={data.createdTime}
-                    >
+                    <div className="chat-message-wrapper" key={index}>
                       <div className="chat-message-person">{data.from}</div>
                       <div className="chat-message-content">{data.content}</div>
                       {data.opened === true && (

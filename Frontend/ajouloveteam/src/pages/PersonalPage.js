@@ -154,13 +154,17 @@ function PersonalPage() {
             <div className="personal-info-jemok">개인정보 관리</div>
             <div className="personal-content-wrapper">
               <div className="personal-info-title">
-                {personalInfoTitle.map((data) => (
-                  <div className="info-title">{data}</div>
+                {personalInfoTitle.map((data, index) => (
+                  <div className="info-title" key={index}>
+                    {data}
+                  </div>
                 ))}
               </div>
               <div className="personal-info-content">
-                {personalInfo.map((data) => (
-                  <div className="info-content">{data}</div>
+                {personalInfo.map((data, index) => (
+                  <div className="info-content" key={index}>
+                    {data}
+                  </div>
                 ))}
               </div>
             </div>
@@ -187,6 +191,7 @@ function PersonalPage() {
                 {resume.map((data, index) => (
                   <div
                     className="resume-info-title"
+                    key={index}
                     onClick={() => {
                       setResumeTitle(data.title);
                       setResumeContent(data.content);
