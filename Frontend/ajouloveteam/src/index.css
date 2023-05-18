@@ -160,6 +160,9 @@ hr {
   font-size: 25px;
   font-weight: bold;
 }
+.top-name:hover {
+  cursor: pointer;
+}
 .main-mid {
 
   width: 100%;
@@ -190,6 +193,9 @@ hr {
   border-color: #d5d5d5;
   border-width: 2px;
 }
+.jongbo-text-wrapper {
+  display: flex;
+}
 .jongbo-text-name {
   font-size: 20px;
   font-weight: bold;
@@ -197,12 +203,18 @@ hr {
 }
 .jongbo-button-wrapper {
   margin-top: 10px;
+  width: 95%;
+  display: flex;
+  justify-content: center;
 }
 .jongbo-button-wrapper Button {
   width: 100px;
   height: 30px;
 }
-
+.ButtonAlarm {
+  color: red;
+  border-color: red;
+}
 .right-top-wrapper {
   display: flex;
   width: 65%;
@@ -261,6 +273,7 @@ hr {
 .gudok-section {
   margin: 20px;
 }
+
 .subject {
   height: 70px;
   background-color: white;
@@ -313,9 +326,24 @@ hr {
   font-weight: bold;
   margin-top: 3px;
 }
+.team-jongbo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.team-jongboname-wrapper {
+  display: flex;
+}
 .team-jongbo-name {
   font-weight: bold;
   margin-top: 3px;
+}
+.team-jongbo-leader {
+  color: red;
+  font-size: 15px;
+  margin-top: 4px;
+  margin-left: 5px;
 }
 .right-down-wrapper {
   width: 65%
@@ -406,8 +434,9 @@ hr {
 .subject-search-name {
   font-size: 17px;
   font-weight: bold;
-  width: 30%;
+  width: 50%;
   display: flex;
+  justify-content: center;
 }
 
 .subject-search-prof {
@@ -418,10 +447,21 @@ hr {
   font-weight: bold;
   font-size: 20px;
   color: #919191;
-  width: 20%;
-  margin-left: 40px;
+  margin-left: 100px;
+  display: flex;
+  width: 60%;
 }
-
+.team-info-supplyName {
+  font-weight: bold;
+  font-size: 20px;
+  color: #919191;
+  margin-left: 100px;
+  width: 40%;
+}
+.team-info-id {
+  color: #919191;
+  font-size: 20px;
+}
 .team-info-stack {
   color: #919191;
   width: 30%;
@@ -437,9 +477,16 @@ hr {
 }
 
 .team-top-name {
+  display: flex;
   font-weight: bold;
   font-size: 17px;
-  margin-left: 50px;
+  margin-left: 50px; 
+}
+
+.team-top-leader {
+  color: red;
+  font-size: 18px;
+  margin-left: 5px;
 }
 
 .team-info-com {
@@ -510,7 +557,9 @@ hr {
   scroll-behavior: smooth;
   -ms-overflow-style: none;
 }
-
+.resume-dialog-wrapper {
+  
+}
 .myjongbo-resume-wrapper::-webkit-scrollbar {
   display:none;
 }
@@ -666,3 +715,124 @@ hr {
   border-width: 2px;
 }
 
+.chat-mid {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  background: #f7f7f7;
+}
+.chat-side {
+  width: 20%;
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+}
+.chat-side-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.chat-room-jemok {
+  font-size: 25px;
+  color: #072e5d;
+  margin-top: 20px;
+}
+.chat-room-list {
+  width: 80%;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.char-room-name{
+  margin: 5px;
+  font-size: 20px;
+}
+
+.chat-main {
+  width: 80%;
+}
+
+.chat-main-top {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chat-top-name {
+  font-size: 20px;
+}
+
+.chat-main-mid {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 615px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+.chat-mid-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  border-width: 1px;
+  padding: 10px;
+  border-color: #d5d5d5;
+}
+.chat-message-time {
+  margin-top: 5px;
+  font-size: 12px;
+  display: flex;
+}
+.chat-message-new {
+  font-size: 12px;
+  color: red;
+  margin-left: 8px;
+}
+.chat-message-notRead {
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  border-width: 1px;
+  padding: 10px;
+  margin: 2px;
+  border-color: #d5d5d5;
+}
+.chat-message-person {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.chat-input-wrapper {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 100px;
+}
+.chat-text{ 
+  outline: none !important;
+  -ms-overflow-style: none !important;
+}
+.chat-text::-webkit-scrollbar {
+  display:none !important;
+}

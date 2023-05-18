@@ -7,9 +7,8 @@ export const useridState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
-
-export const userpwdState = atom({
-  key: "userPwd",
+export const userNickNameState = atom({
+  key: "userNickName",
   default: "",
   effects_UNSTABLE: [persistAtom],
 });

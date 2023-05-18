@@ -10,7 +10,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { useridState, userpwdState } from "../recoil/atom";
+import { useridState, userNickNameState } from "../recoil/atom";
 
 function LoginPage() {
   const [id, setId] = useState("");
@@ -18,7 +18,7 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [open, setOpen] = React.useState(false);
   const [userId, setUserId] = useRecoilState(useridState);
-  const [userPwd, setUserPwd] = useRecoilState(userpwdState);
+  const [userNickName, setUserNickName] = useRecoilState(userNickNameState);
 
   const navigate = useNavigate();
   const changeId = (event) => {
@@ -50,10 +50,13 @@ function LoginPage() {
       .then((resp) => {
         alert(id + "님 로그인 되었습니다");
         console.log(resp);
+        localStorage.setItem("accessToken", resp.data.accessToken);
+        const accessToken = localStorage.getItem("accessToken");
+        console.log(accessToken);
         setId("");
         setPwd("");
-        setUserId(id);
-        setUserPwd(pwd);
+        setUserId(resp.data.loginId);
+        setUserNickName(resp.data.nickname);
         navigate("/main");
       })
       .catch((err) => {

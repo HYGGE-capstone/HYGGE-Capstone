@@ -210,29 +210,57 @@ function PersonalPage() {
         onClose={handleClose}
         PaperProps={{ sx: { width: "60%", height: "40%" } }}
       >
-        <DialogTitle>이력서 확인 및 편집</DialogTitle>
+        <DialogTitle style={{ background: "#072e5d", color: "white" }}>
+          이력서 확인 및 편집
+        </DialogTitle>
         <DialogContent>
           <div className="resume-dialog-wrapper">
             <TextField
-              id="outlined-textarea"
+              className="chat-text"
+              variant="standard"
               value={resumeTitle}
               onChange={changeResumeTitle}
-              style={{ width: "100%" }}
+              style={{
+                width: "100%",
+                marginTop: "10px",
+              }}
+              InputProps={{
+                disableUnderline: true,
+                style: {
+                  overflowY: "scroll",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                },
+              }}
               multiline
             />
             <TextField
               id="outlined-textarea"
+              variant="standard"
               value={resumeContent}
               onChange={changeResumeContent}
-              style={{ width: "100%" }}
+              style={{ width: "100%", marginTop: "10px" }}
+              InputProps={{
+                disableUnderline: true,
+                style: {
+                  overflowY: "scroll",
+                  fontSize: "15px",
+                },
+              }}
               multiline
             />
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={resumeChange}>수정</Button>
-          <Button onClick={resumeDelete}>삭제</Button>
-          <Button onClick={handleClose}>닫기</Button>
+          <Button onClick={resumeChange} style={{ color: "#072e5d" }}>
+            수정
+          </Button>
+          <Button onClick={resumeDelete} style={{ color: "#072e5d" }}>
+            삭제
+          </Button>
+          <Button onClick={handleClose} style={{ color: "#072e5d" }}>
+            닫기
+          </Button>
         </DialogActions>
       </Dialog>
 

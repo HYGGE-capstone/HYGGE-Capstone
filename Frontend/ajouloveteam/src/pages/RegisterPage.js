@@ -99,12 +99,13 @@ function RegisterPage() {
         `http://43.201.179.98:8080/api/v1/member/signup/email/auth?to=${userEmail}`
       ) //임시
       .then((resp) => {
-        console.log(resp.data.code);
         setValidEmailVer(resp.data.code);
         setSchoolId(resp.data.schoolId);
         handleClickOpen();
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
   };
 
   const onSubmit = async () => {
@@ -119,11 +120,13 @@ function RegisterPage() {
     await axios
       .post(`http://43.201.179.98:8080/api/v1/member/signup`, user) //임시
       .then((resp) => {
+        console.log(resp);
         alert("회원가입 완료!");
         navigate("/login");
       })
       .catch((err) => {
         alert("회원가입 실패!");
+        console.log(err);
       });
   };
 
