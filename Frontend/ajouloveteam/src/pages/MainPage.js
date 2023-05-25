@@ -4,30 +4,16 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
-import { FaAngleLeft } from "react-icons/fa";
-import { FaAngleRight } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { useRecoilState } from "recoil";
 import { useridState, userNickNameState } from "../recoil/atom";
 import axios from "axios";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import api from "../axios/axios";
 import { get } from "react-hook-form";
-
-const wholeTextArray = [
-  "apple",
-  "banana",
-  "coding",
-  "javascript",
-  "java",
-  "juice",
-  "jupitor",
-  "원티드",
-  "프리온보딩",
-  "프론트엔드",
-];
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 function MainPage() {
   const [open, setOpen] = React.useState(false);
@@ -42,7 +28,6 @@ function MainPage() {
   const [open10, setOpen10] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
   const [select, setSelect] = useState("");
-  const [select2, setSelect2] = useState("");
   const [subjectSection, setSubjectSection] = useState(-1);
   const [teamTopButton, setTeamTopButton] = useState(0);
   const [selectTeamName, setSelectTeamName] = useState("");
@@ -79,6 +64,23 @@ function MainPage() {
   const [subscriberList, setSubscriberList] = useState([]);
   const [teamSuggestList, setTeamSuggestList] = useState([]);
   const [team, setTeam] = useState([]);
+  const modules = {
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ font: [] }],
+        [{ align: [] }],
+        ["bold", "italic", "underline", "strike"],
+        [
+          {
+            color: [],
+          },
+          { background: [] },
+        ],
+        ["clean"],
+      ],
+    },
+  };
   const handleClick = (id, name, leader, subjectId) => {
     setSelect(id);
     console.log(id);
@@ -99,8 +101,8 @@ function MainPage() {
     setSubjectId(id);
     // 가입 로직 실행
   };
-  const changeTeamDescription = (event) => {
-    setTeamDescription(event.target.value);
+  const changeTeamDescription = (value) => {
+    setTeamDescription(value);
   };
   const changeTeamName = (event) => {
     setTeamName(event.target.value);
@@ -120,8 +122,8 @@ function MainPage() {
   const changeResumeTitle = (e) => {
     setResumeTitle(e.target.value);
   };
-  const changeResumeContent = (e) => {
-    setResumeContent(e.target.value);
+  const changeResumeContent = (value) => {
+    setResumeContent(value);
   };
   const changeInputValue = (event) => {
     setInputValue(event.target.value);
@@ -241,13 +243,9 @@ function MainPage() {
       description: teamDescription,
       maxMember: teamMaxNum,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/team/create`, newTeam, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/team/create`, newTeam, {})
       .then((resp) => {
         console.log(resp);
         handleClose2();
@@ -273,10 +271,8 @@ function MainPage() {
     handleClickOpen3();
   };
   const subSearch = async (e) => {
-    await axios
-      .get(
-        `http://43.201.179.98:8080/api/v1/subject/search?query=${inputValue}`
-      ) //임시
+    await api
+      .get(`v1/subject/search?query=${inputValue}`) //임시
       .then((resp) => {
         console.log(resp);
         console.log(resp.data.subjects);
@@ -289,13 +285,9 @@ function MainPage() {
   };
 
   const getTeamList = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/team`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .get(`v1/team`)
       .then((resp) => {
         console.log(resp);
         setTeam(resp.data.teams);
@@ -309,13 +301,9 @@ function MainPage() {
     const id = {
       subjectId: subjectId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/subscribe`, id, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/subscribe`, id)
       .then((resp) => {
         console.log(resp);
         getGudok();
@@ -336,13 +324,9 @@ function MainPage() {
       title: resumeTitle,
       subjectId: subjectId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/resume`, resume, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/resume`, resume)
       .then((resp) => {
         console.log(resp);
         handleClose();
@@ -355,16 +339,9 @@ function MainPage() {
   };
 
   const showMemberResume = async (memberId) => {
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .get(
-        `http://43.201.179.98:8080/api/v1/resume/subject/${selectSubjectId}/member/${memberId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .get(`v1/resume/subject/${selectSubjectId}/member/${memberId}`)
       .then((resp) => {
         console.log(resp);
         setShowResumeTitle(resp.data.title);
@@ -381,13 +358,9 @@ function MainPage() {
     const teamApply = {
       teamId: teamId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/applicant`, teamApply, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/applicant`, teamApply)
       .then((resp) => {
         console.log(resp);
         handleClose5();
@@ -402,13 +375,9 @@ function MainPage() {
     const teamApply = {
       teamApplicantId: teamApplicantId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/applicant/accept`, teamApply, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/applicant/accept`, teamApply)
       .then((resp) => {
         console.log(resp);
         getTeamApplyList();
@@ -423,13 +392,9 @@ function MainPage() {
     const teamApply = {
       teamApplicantId: teamApplicantId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/applicant/reject`, teamApply, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/applicant/reject`, teamApply)
       .then((resp) => {
         console.log(resp);
         getTeamApplyList();
@@ -446,13 +411,9 @@ function MainPage() {
       subscriberId: selectSuggestId,
       teamId: select,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/offer`, teamSuggest, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/offer`, teamSuggest)
       .then((resp) => {
         console.log(resp);
         getSubscriberList();
@@ -469,13 +430,9 @@ function MainPage() {
     const offer = {
       offerId: selectOfferId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/offer/accept`, offer, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/offer/accept`, offer)
       .then((resp) => {
         console.log(resp);
         getTeamSuggestList();
@@ -491,13 +448,9 @@ function MainPage() {
     const offer = {
       offerId: selectOfferId,
     };
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .post(`http://43.201.179.98:8080/api/v1/offer/reject`, offer, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .post(`v1/offer/reject`, offer)
       .then((resp) => {
         console.log(resp);
         getTeamSuggestList();
@@ -509,14 +462,10 @@ function MainPage() {
       });
   };
   const getTeamSuggestList = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+    //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(4);
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/offer?subjectId=${subjectId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    await api
+      .get(`v1/offer?subjectId=${subjectId}`)
       .then((resp) => {
         console.log(resp);
         setTeamSuggestList(resp.data.offerTeams);
@@ -527,13 +476,9 @@ function MainPage() {
   };
 
   const getAlarmCheck = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/noti/check`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .get(`v1/noti/check`)
       .then((resp) => {
         console.log(resp);
         setIsAlarm(resp.data.dirty);
@@ -543,13 +488,9 @@ function MainPage() {
       });
   };
   const getGudok = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/subscribe`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .get(`v1/subscribe`)
       .then((resp) => {
         console.log(resp);
         setGucok(resp.data.subscribes);
@@ -560,17 +501,10 @@ function MainPage() {
   };
 
   const getSubscriberList = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+    //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(2);
-    await axios
-      .get(
-        `http://43.201.179.98:8080/api/v1/team/subscribers?subjectId=${selectSubjectId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      )
+    await api
+      .get(`v1/team/subscribers?subjectId=${selectSubjectId}`)
       .then((resp) => {
         console.log(resp);
         setSubscriberList(resp.data.members);
@@ -580,14 +514,10 @@ function MainPage() {
       });
   };
   const getSubjectTeamList = async (id) => {
-    const accessToken = localStorage.getItem("accessToken");
+    //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(3);
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/team/search?subjectId=${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    await api
+      .get(`v1/team/search?subjectId=${id}`)
       .then((resp) => {
         console.log(resp);
         setSubTeamInfo(resp.data.teams);
@@ -597,14 +527,10 @@ function MainPage() {
       });
   };
   const getTeamMembers = async (id) => {
-    const accessToken = localStorage.getItem("accessToken");
+    //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(0);
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/team/members?teamId=${id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    await api
+      .get(`v1/team/members?teamId=${id}`)
       .then((resp) => {
         console.log(resp);
         setTeamInfo(resp.data.members);
@@ -618,13 +544,9 @@ function MainPage() {
   const getTeamApplyList = async () => {
     setTeamTopButton(1);
     console.log(select);
-    const accessToken = localStorage.getItem("accessToken");
-    await axios
-      .get(`http://43.201.179.98:8080/api/v1/applicant?teamId=${select}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .get(`v1/applicant?teamId=${select}`)
       .then((resp) => {
         console.log(resp);
         setTeamSupplyInfo(resp.data.applicants);
@@ -640,57 +562,8 @@ function MainPage() {
     getAlarmCheck();
   }, []);
 
-  var subjectSearch = [
-    "캡스톤디자인1",
-    "캡스톤디자인2",
-    "캡스톤디자인3",
-    "캡스톤디자인4",
-    "캡스톤디자인5",
-  ];
-  var resume = [
-    {
-      id: 1,
-      user_id: 1,
-      subject_id: 1,
-      title: "이력서1",
-      content:
-        "동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세",
-    },
-    {
-      id: 2,
-      user_id: 1,
-      subject_id: 1,
-      title: "이력서1",
-      content:
-        "동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세",
-    },
-    {
-      id: 3,
-      user_id: 1,
-      subject_id: 1,
-      title: "이력서1",
-      content:
-        "동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세",
-    },
-    {
-      id: 4,
-      user_id: 1,
-      subject_id: 1,
-      title: "이력서1",
-      content:
-        "동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세",
-    },
-    {
-      id: 5,
-      user_id: 1,
-      subject_id: 1,
-      title: "이력서1",
-      content:
-        "동해물과백두산이 마르고 닳도록 하느님이 보우하사 우리나라만세 무궁화삼천리 화려강산 대한사람 대한으로 길이보전하세",
-    },
-  ];
   return (
-    <div>
+    <div className="main-page">
       <div className="main-top">
         <div className="main-wrapper">
           <div className="top-name">아주좋은팀</div>
@@ -1156,67 +1029,62 @@ function MainPage() {
                   marginTop: "15px",
                   display: "flex",
                   flexDirection: "column",
+                  overflowY: "scroll",
                 }}
               >
-                팀 이름
-                <TextField
-                  id="outlined-textarea"
-                  variant="standard"
-                  value={teamName}
-                  onChange={changeTeamName}
-                  style={{
-                    width: "100%",
-                    marginBottom: "12px",
-                  }}
-                  InputProps={{
-                    style: {},
-                  }}
-                  multiline
-                />
-                팀 주제
-                <TextField
-                  id="outlined-textarea"
-                  variant="standard"
-                  value={teamSubject}
-                  onChange={changeTeamSubject}
-                  style={{
-                    width: "100%",
-                    marginBottom: "12px",
-                  }}
-                  InputProps={{
-                    style: {},
-                  }}
-                  multiline
-                />
-                팀 설명
-                <TextField
-                  id="outlined-textarea"
-                  variant="standard"
-                  value={teamDescription}
-                  onChange={changeTeamDescription}
-                  style={{
-                    width: "100%",
-                    marginBottom: "12px",
-                  }}
-                  InputProps={{
-                    style: {
-                      overflowY: "scroll",
-                    },
-                  }}
-                  multiline
-                />
-                팀 인원수
-                <input
-                  type="number"
-                  value={teamMaxNum}
-                  onChange={changeTeamMaxNum}
-                  min="2"
-                  style={{
-                    marginTop: "12px",
-                    width: "20%",
-                    fontSize: "15px",
-                  }}
-                ></input>
+                <div
+                  className="resume-dialog-wrapper"
+                  style={{ height: "80%" }}
+                >
+                  팀 이름
+                  <TextField
+                    id="outlined-textarea"
+                    variant="standard"
+                    value={teamName}
+                    onChange={changeTeamName}
+                    style={{
+                      width: "100%",
+                      marginBottom: "12px",
+                    }}
+                    InputProps={{
+                      style: {},
+                    }}
+                    multiline
+                  />
+                  팀 주제
+                  <TextField
+                    id="outlined-textarea"
+                    variant="standard"
+                    value={teamSubject}
+                    onChange={changeTeamSubject}
+                    style={{
+                      width: "100%",
+                      marginBottom: "12px",
+                    }}
+                    InputProps={{
+                      style: {},
+                    }}
+                    multiline
+                  />
+                  팀 설명
+                  <ReactQuill
+                    onChange={changeTeamDescription}
+                    value={teamDescription}
+                    modules={modules}
+                  />
+                  팀 인원수
+                  <input
+                    type="number"
+                    value={teamMaxNum}
+                    onChange={changeTeamMaxNum}
+                    min="2"
+                    style={{
+                      marginTop: "12px",
+                      width: "20%",
+                      fontSize: "15px",
+                    }}
+                  ></input>
+                </div>
               </DialogContent>
               <DialogActions>
                 <Button onClick={makeTeam} style={{ color: "#072e5d" }}>
@@ -1237,7 +1105,10 @@ function MainPage() {
                 이력서 추가
               </DialogTitle>
               <DialogContent style={{ marginTop: "15px" }}>
-                <div className="resume-dialog-wrapper">
+                <div
+                  className="resume-dialog-wrapper"
+                  style={{ height: "80%" }}
+                >
                   이력서 제목
                   <TextField
                     id="outlined-textarea"
@@ -1256,18 +1127,11 @@ function MainPage() {
                     multiline
                   />
                   이력서 내용
-                  <TextField
-                    id="outlined-textarea"
-                    variant="standard"
-                    value={resumeContent}
+                  <ReactQuill
                     onChange={changeResumeContent}
-                    style={{ width: "100%", marginBottom: "12px" }}
-                    InputProps={{
-                      style: {
-                        overflowY: "scroll",
-                      },
-                    }}
-                    multiline
+                    value={resumeContent}
+                    modules={modules}
+                    style={{ height: "70%" }}
                   />
                 </div>
               </DialogContent>
@@ -1301,10 +1165,9 @@ function MainPage() {
               <DialogContent>
                 <div
                   className="resume-dialog-wrapper"
-                  style={{ whiteSpace: "pre-line" }}
-                >
-                  {teamJonbo}
-                </div>
+                  style={{ marginTop: "20px" }}
+                  dangerouslySetInnerHTML={{ __html: teamJonbo }}
+                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose3} style={{ color: "#072e5d" }}>
@@ -1333,10 +1196,9 @@ function MainPage() {
               <DialogContent>
                 <div
                   className="resume-dialog-wrapper"
-                  style={{ marginTop: "20px", whiteSpace: "pre-line" }}
-                >
-                  {showResumeContent}
-                </div>
+                  style={{ marginTop: "20px" }}
+                  dangerouslySetInnerHTML={{ __html: showResumeContent }}
+                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose4} style={{ color: "#072e5d" }}>

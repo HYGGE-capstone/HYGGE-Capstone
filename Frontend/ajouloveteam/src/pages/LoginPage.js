@@ -51,6 +51,7 @@ function LoginPage() {
         alert(id + "님 로그인 되었습니다");
         console.log(resp);
         localStorage.setItem("accessToken", resp.data.accessToken);
+        localStorage.setItem("refreshToken", resp.data.refreshToken);
         const accessToken = localStorage.getItem("accessToken");
         console.log(accessToken);
         setId("");
