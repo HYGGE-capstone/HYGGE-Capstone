@@ -184,15 +184,10 @@ function RegisterPage() {
           onChange={changeEmail}
           {...register("users_email", {
             required: true,
-            pattern:
-              /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[ac]{2}.[kr]{2}$/i,
           })}
         />
         {errors.users_email && errors.users_email.type === "required" && (
           <p>This email field is required</p>
-        )}
-        {errors.users_email && errors.users_email.type === "pattern" && (
-          <p>This email is not match ajou mail</p>
         )}
         <div className="id">
           <label>ID</label>
