@@ -64,34 +64,25 @@ function ChatPage() {
     <div>
       <div className="main-top">
         <div className="main-wrapper">
-          <div className="top-name" onClick={() => navigateToMain()}>
+          <div
+            className="top-name"
+            onClick={() => navigateToMain()}
+            style={{ fontFamily: "SUITE-Regular" }}
+          >
             아주좋은팀
           </div>
         </div>
       </div>
       <div className="chat-mid">
-        <div className="chat-side">
-          <div className="chat-side-wrapper">
-            <div className="chat-room-jemok">쪽지함 목록</div>
-            <div className="chat-room-list">
-              {chatRoomList.map((data) => {
-                return (
-                  <div
-                    className="char-room-name"
-                    key={data.id}
-                    onClick={() => getSystemAlarm()}
-                  >
-                    {data.name}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
         <div className="chat-main">
           <div className="chat-main-top">
             <div className="chat-top-wrapper">
-              <div className="chat-top-name">{selectChatRoom}</div>
+              <div
+                className="chat-top-name"
+                style={{ fontFamily: "SUITE-Regular" }}
+              >
+                시스템 알림
+              </div>
             </div>
           </div>
           <div className="chat-main-mid">

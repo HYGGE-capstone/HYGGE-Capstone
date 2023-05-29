@@ -12,3 +12,8 @@ export const userNickNameState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+export const messageToIdState = atom({
+  key: "messageToId",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});

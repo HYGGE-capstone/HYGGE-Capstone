@@ -74,7 +74,7 @@ function RegisterPage() {
   const checkIdCanUsable = async (e) => {
     e.preventDefault();
     await axios
-      .get(`http://43.201.179.98:8080/api/v1/member/signup/loginId/${userId}`) //임시
+      .get(`http://43.201.179.98:8080/api/auth/signup/loginId/${userId}`) //임시
       .then((resp) => {
         alert("사용 가능한 아이디입니다.");
         setidCanUsable(true);
@@ -96,7 +96,7 @@ function RegisterPage() {
   const emailVerCheck = async (e) => {
     await axios
       .post(
-        `http://43.201.179.98:8080/api/v1/member/signup/email/auth?to=${userEmail}`
+        `http://43.201.179.98:8080/api/auth/signup/email/auth?to=${userEmail}`
       ) //임시
       .then((resp) => {
         setValidEmailVer(resp.data.code);
@@ -118,7 +118,7 @@ function RegisterPage() {
     };
 
     await axios
-      .post(`http://43.201.179.98:8080/api/v1/member/signup`, user) //임시
+      .post(`http://43.201.179.98:8080/api/auth/signup`, user) //임시
       .then((resp) => {
         console.log(resp);
         alert("회원가입 완료!");

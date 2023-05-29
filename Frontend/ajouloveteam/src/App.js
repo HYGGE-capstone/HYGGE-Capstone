@@ -6,6 +6,8 @@ import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage";
 import PersonalPage from "./pages/PersonalPage";
 import ChatPage from "./pages/ChatPage";
+import MessagePage from "./pages/MessagePage";
+import AdminPage from "./admin/AdminPage";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/main" element={<MainPage />} />
         <Route path="/personal" element={<PersonalPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/message" element={<MessagePage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );

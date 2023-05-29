@@ -729,8 +729,8 @@ hr {
 
 .chat-mid {
   width: 100%;
-  height: 100vh;
   display: flex;
+  justify-content: center;
   background: #f7f7f7;
 }
 .chat-side {
@@ -774,7 +774,6 @@ hr {
   border-style: solid;
   border-color: #d5d5d5;
   border-width: 2px;
-  margin: 5px;
   height: 60px;
   display: flex;
   justify-content: center;
@@ -789,7 +788,6 @@ hr {
   border-style: solid;
   border-color: #d5d5d5;
   border-width: 2px;
-  margin: 5px;
   height: 615px;
   overflow-y: scroll;
   scroll-behavior: smooth;
@@ -846,5 +844,318 @@ hr {
   -ms-overflow-style: none !important;
 }
 .chat-text::-webkit-scrollbar {
+  display:none !important;
+}
+
+
+
+.message-mid {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  background: #f7f7f7;
+}
+.message-side {
+  width: 20%;
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+}
+.message-side-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.message-room-jemok {
+  width: 100%;
+  height: 70px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #072e5d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+.message-room-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.message-room-name{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 60px;
+  margin: 5px;
+  font-size: 20px;
+  border-bottom: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+}
+
+.message-main {
+  width: 80%;
+}
+
+.message-main-top {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.message-top-name {
+  font-size: 20px;
+}
+
+.message-main-mid {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 500px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+.message-mid-wrapper {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.message-message-wrapper {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: 20px;
+  border: solid;
+  border-width: 1px;
+  padding: 10px;
+  border-color: #a2a2a2;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+.message-same-wrapper {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: 20px;
+  border: solid;
+  border-width: 1px;
+  border-color: #a2a2a2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.message-message-time {
+  margin-top: 5px;
+  font-size: 12px;
+  display: flex;
+}
+.message-message-new {
+  font-size: 12px;
+  color: red;
+  margin-left: 8px;
+}
+.message-message-notRead {
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  border-width: 1px;
+  padding: 10px;
+  margin: 2px;
+  border-color: #d5d5d5;
+}
+.message-message-person {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.message-input-wrapper {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 100px;
+}
+.message-text{ 
+  outline: none !important;
+  -ms-overflow-style: none !important;
+}
+.message-text::-webkit-scrollbar {
+  display:none !important;
+}
+
+.admin-mid {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #f7f7f7;
+}
+
+.admin-mid Button{
+  border-radius: 0;
+  border-width: 2px;
+}
+.admin-side {
+  width: 20%;
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+}
+.admin-side-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.admin-room-jemok {
+  font-size: 25px;
+  color: #072e5d;
+  margin-top: 20px;
+}
+.admin-room-list {
+  width: 80%;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.admin-room-name{
+  margin: 5px;
+  font-size: 20px;
+}
+
+.admin-main {
+  width: 80%;
+}
+
+.admin-main-top {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-top-wrapper {
+  margin-left: 550px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-top-name {
+  
+  font-size: 20px;
+}
+.admin-top-button {
+  display: flex;
+  justify-content: right;
+  margin-left: 200px;
+}
+
+.admin-main-mid {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  height: 615px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+}
+
+.admin-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: solid;
+  border-width: 1px;
+  padding: 30px;
+  border-color: #d5d5d5;
+}
+
+.admin-content-name {
+  font-size: 20px;
+}
+.admin-mid-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  border-width: 1px;
+  padding: 10px;
+  border-color: #d5d5d5;
+}
+.admin-message-time {
+  margin-top: 5px;
+  font-size: 12px;
+  display: flex;
+}
+.admin-message-new {
+  font-size: 12px;
+  color: red;
+  margin-left: 8px;
+}
+.admin-message-notRead {
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  border-width: 1px;
+  padding: 10px;
+  margin: 2px;
+  border-color: #d5d5d5;
+}
+.admin-message-person {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.admin-input-wrapper {
+  background: white;
+  border-style: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  margin: 5px;
+  height: 100px;
+}
+.admin-text{ 
+  outline: none !important;
+  -ms-overflow-style: none !important;
+}
+.admin-text::-webkit-scrollbar {
   display:none !important;
 }

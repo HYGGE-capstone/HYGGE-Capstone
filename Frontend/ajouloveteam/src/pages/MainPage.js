@@ -8,12 +8,19 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useRecoilState } from "recoil";
-import { useridState, userNickNameState } from "../recoil/atom";
+import {
+  useridState,
+  userNickNameState,
+  messageToIdState,
+} from "../recoil/atom";
 import axios from "axios";
 import api from "../axios/axios";
 import { get } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Dropdown from "react-bootstrap/Dropdown";
+import Button2 from "react-bootstrap/Button";
 
 function MainPage() {
   const [open, setOpen] = React.useState(false);
@@ -26,6 +33,8 @@ function MainPage() {
   const [open8, setOpen8] = React.useState(false);
   const [open9, setOpen9] = React.useState(false);
   const [open10, setOpen10] = React.useState(false);
+  const [open11, setOpen11] = React.useState(false);
+  const [open12, setOpen12] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
   const [select, setSelect] = useState("");
   const [subjectSection, setSubjectSection] = useState(-1);
@@ -45,8 +54,10 @@ function MainPage() {
   const [teamName, setTeamName] = useState("");
   const [userId, setUserId] = useRecoilState(useridState);
   const [userNickName, setUserNickName] = useRecoilState(userNickNameState);
+  const [messageToId, setMessageToId] = useRecoilState(messageToIdState);
   const [resumeTitle, setResumeTitle] = useState("");
   const [resumeContent, setResumeContent] = useState("");
+  const [resumeId, setResumeId] = useState();
   const [showResumeTitle, setShowResumeTitle] = useState("");
   const [showResumeContent, setShowResumeContent] = useState("");
   const [subjectId, setSubjectId] = useState("");
@@ -54,8 +65,10 @@ function MainPage() {
   const [teamTitle, setTeamTitle] = useState("");
   const [selectOfferId, setSelectOfferId] = useState();
   const [selectOfferTeamName, setSelectOfferTeamName] = useState("");
+  const [messageContent, setMessageContent] = useState("");
   const [gudok, setGucok] = useState([]);
   const [isAlarm, setIsAlarm] = useState(false);
+  const [isMessage, setIsMessage] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
   const [subjectSearchResult, setSubjectSearchResult] = useState([]);
   const [teamInfo, setTeamInfo] = useState([]);
@@ -129,6 +142,9 @@ function MainPage() {
     setInputValue(event.target.value);
   };
 
+  const changeMessageContent = (event) => {
+    setMessageContent(event.target.value);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -220,6 +236,22 @@ function MainPage() {
   const handleClose10 = () => {
     setOpen10(false);
   };
+
+  const handleClickOpen11 = (id, name) => {
+    setOpen11(true);
+  };
+
+  const handleClose11 = () => {
+    setOpen11(false);
+  };
+
+  const handleClickOpen12 = (id, name) => {
+    setOpen12(true);
+  };
+
+  const handleClose12 = () => {
+    setOpen12(false);
+  };
   const navigate = useNavigate();
 
   const navigateToPersonal = () => {
@@ -228,12 +260,33 @@ function MainPage() {
   const navigateToChat = () => {
     navigate("/chat");
   };
+  const navigateToMessage = () => {
+    navigate("/message");
+  };
 
-  const logout = () => {
-    navigate("/login");
-    setUserId("");
-    setUserNickName("");
-    localStorage.removeItem("accessToken");
+  const OpenMessageForm = (memberId) => {
+    setMessageToId(memberId);
+    handleClickOpen12();
+  };
+  const logout = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const token = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    };
+    await api
+      .post(`auth/logout`, token)
+      .then((resp) => {
+        navigate("/login");
+        setUserId("");
+        setUserNickName("");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const makeTeam = async () => {
     const newTeam = {
@@ -461,6 +514,59 @@ function MainPage() {
         handleClose10();
       });
   };
+
+  const messageSend = async () => {
+    const message = {
+      to: messageToId,
+      content: messageContent,
+    };
+    await api
+      .post(`v1/message`, message)
+      .then((resp) => {
+        console.log(resp);
+        setMessageToId(resp.data.toId);
+        handleClose12();
+        navigateToMessage();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        handleClose12();
+      });
+  };
+
+  const setResumeChange = async () => {
+    await api
+      .get(`v1/resume/subject/${subjectId}/me`)
+      .then((resp) => {
+        console.log(resp);
+        setResumeTitle(resp.data.title);
+        setResumeContent(resp.data.content);
+        setResumeId(resp.data.resumeId);
+        handleClickOpen11();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+
+  const resumeChange = async () => {
+    const resume = {
+      resumeId: resumeId,
+      content: resumeContent,
+      title: resumeTitle,
+      subjectId: subjectId,
+    };
+    await api
+      .put(`v1/resume`, resume)
+      .then((resp) => {
+        console.log(resp);
+        handleClose11();
+      })
+      .catch((err) => {
+        handleClose11();
+        alert(err.response.data.message);
+      });
+  };
   const getTeamSuggestList = async () => {
     //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(4);
@@ -487,6 +593,18 @@ function MainPage() {
         alert(err.response.data.message);
       });
   };
+  const getMessageCheck = async () => {
+    //const accessToken = localStorage.getItem("accessToken");
+    await api
+      .get(`v1/message/check/total`)
+      .then((resp) => {
+        console.log(resp);
+        setIsMessage(resp.data.dirty);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
   const getGudok = async () => {
     //const accessToken = localStorage.getItem("accessToken");
     await api
@@ -496,6 +614,7 @@ function MainPage() {
         setGucok(resp.data.subscribes);
       })
       .catch((err) => {
+        console.log(err);
         alert(err.response.data.message);
       });
   };
@@ -560,6 +679,7 @@ function MainPage() {
     getGudok();
     getTeamList();
     getAlarmCheck();
+    getMessageCheck();
   }, []);
 
   return (
@@ -588,14 +708,14 @@ function MainPage() {
                       variant="outlined"
                       style={{
                         marginRight: "10px",
-                        width: "25%",
+                        width: "20%",
                         fontSize: "9px",
                         color: "red",
                         borderColor: "red",
                       }}
                       onClick={navigateToChat}
                     >
-                      내 알림
+                      알림
                     </Button>
                   ) : (
                     <Button
@@ -603,12 +723,40 @@ function MainPage() {
                       variant="outlined"
                       style={{
                         marginRight: "10px",
-                        width: "25%",
+                        width: "20%",
                         fontSize: "12px",
                       }}
                       onClick={navigateToChat}
                     >
-                      내 알림
+                      알림
+                    </Button>
+                  )}
+
+                  {isMessage === true ? (
+                    <Button
+                      variant="outlined"
+                      style={{
+                        marginRight: "10px",
+                        width: "20%",
+                        fontSize: "9px",
+                        color: "red",
+                        borderColor: "red",
+                      }}
+                      onClick={navigateToMessage}
+                    >
+                      쪽지
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      style={{
+                        marginRight: "10px",
+                        width: "20%",
+                        fontSize: "12px",
+                      }}
+                      onClick={navigateToMessage}
+                    >
+                      쪽지
                     </Button>
                   )}
 
@@ -616,7 +764,7 @@ function MainPage() {
                     variant="outlined"
                     style={{
                       marginRight: "10px",
-                      width: "25%",
+                      width: "20%",
                       fontSize: "12px",
                     }}
                     onClick={navigateToPersonal}
@@ -626,7 +774,7 @@ function MainPage() {
 
                   <Button
                     variant="outlined"
-                    style={{ width: "25%", fontSize: "12px" }}
+                    style={{ width: "20%", fontSize: "12px" }}
                     onClick={() => logout()}
                   >
                     로그아웃
@@ -711,9 +859,33 @@ function MainPage() {
                       </div>
                     </div>
                     <div className="subject-button">
-                      <Button variant="outlined" style={{ marginLeft: "10px" }}>
-                        구독 해제
-                      </Button>
+                      <Dropdown as={ButtonGroup}>
+                        <Dropdown.Toggle
+                          split
+                          variant="success"
+                          id="dropdown-split-basic"
+                          drop="end"
+                          style={{
+                            background: "white",
+                            color: "blue",
+                            borderColor: "#5D9FDF",
+                            height: "30px",
+                            marginLeft: "40px",
+                          }}
+                        />
+
+                        <Dropdown.Menu>
+                          <Dropdown.Item href="#/action-1">
+                            구독 해제
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            href="#/action-2"
+                            onClick={setResumeChange}
+                          >
+                            이력서 수정
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </div>
                   </div>
                 ))}
@@ -802,6 +974,9 @@ function MainPage() {
                             <Button
                               variant="outlined"
                               style={{ marginLeft: "20px" }}
+                              onClick={() => {
+                                OpenMessageForm(data.memberId);
+                              }}
                             >
                               쪽지
                             </Button>
@@ -852,6 +1027,9 @@ function MainPage() {
                             <Button
                               variant="outlined"
                               style={{ marginLeft: "20px" }}
+                              onClick={() => {
+                                OpenMessageForm(data.applicantId);
+                              }}
                             >
                               쪽지
                             </Button>
@@ -885,6 +1063,9 @@ function MainPage() {
                             <Button
                               variant="outlined"
                               style={{ marginLeft: "20px" }}
+                              onClick={() => {
+                                OpenMessageForm(data.memberId);
+                              }}
                             >
                               쪽지
                             </Button>
@@ -945,6 +1126,9 @@ function MainPage() {
                             <Button
                               variant="outlined"
                               style={{ marginLeft: "20px" }}
+                              onClick={() => {
+                                OpenMessageForm(data.leaderId);
+                              }}
                             >
                               쪽지
                             </Button>
@@ -993,6 +1177,9 @@ function MainPage() {
                             <Button
                               variant="outlined"
                               style={{ marginLeft: "10px" }}
+                              onClick={() => {
+                                OpenMessageForm(data.leaderId);
+                              }}
                             >
                               쪽지
                             </Button>
@@ -1346,6 +1533,91 @@ function MainPage() {
                   확인
                 </Button>
                 <Button onClick={handleClose10} style={{ color: "#072e5d" }}>
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={open11}
+              onClose={handleClose11}
+              PaperProps={{ sx: { width: "60%", height: "60%" } }}
+            >
+              <DialogTitle style={{ background: "#072e5d", color: "white" }}>
+                이력서 수정
+              </DialogTitle>
+              <DialogContent style={{ marginTop: "15px" }}>
+                <div
+                  className="resume-dialog-wrapper"
+                  style={{ height: "80%" }}
+                >
+                  이력서 제목
+                  <TextField
+                    id="outlined-textarea"
+                    variant="standard"
+                    value={resumeTitle}
+                    onChange={changeResumeTitle}
+                    style={{
+                      width: "100%",
+                      marginBottom: "12px",
+                    }}
+                    InputProps={{
+                      style: {
+                        overflowY: "scroll",
+                      },
+                    }}
+                    multiline
+                  />
+                  이력서 내용
+                  <ReactQuill
+                    onChange={changeResumeContent}
+                    value={resumeContent}
+                    modules={modules}
+                    style={{ height: "70%" }}
+                  />
+                </div>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={resumeChange} style={{ color: "#072e5d" }}>
+                  수정
+                </Button>
+                <Button onClick={handleClose11} style={{ color: "#072e5d" }}>
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={open12}
+              onClose={handleClose12}
+              PaperProps={{ sx: { width: "60%", height: "35%" } }}
+            >
+              <DialogTitle style={{ background: "#072e5d", color: "white" }}>
+                쪽지 보내기
+              </DialogTitle>
+              <DialogContent style={{ marginTop: "15px" }}>
+                <TextField
+                  className="message-text"
+                  variant="standard"
+                  placeholder="메세지 입력"
+                  value={messageContent}
+                  onChange={changeMessageContent}
+                  style={{
+                    width: "100%",
+                    height: 100,
+                  }}
+                  InputProps={{
+                    disableUnderline: true,
+                    style: { height: 100, overflowY: "scroll" },
+                  }}
+                  multiline
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={messageSend} style={{ color: "#072e5d" }}>
+                  전송
+                </Button>
+                <Button onClick={handleClose12} style={{ color: "#072e5d" }}>
                   닫기
                 </Button>
               </DialogActions>

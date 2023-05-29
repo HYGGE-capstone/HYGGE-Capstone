@@ -46,7 +46,7 @@ function LoginPage() {
       password: pwd,
     };
     await axios
-      .post("http://43.201.179.98:8080/api/v1/member/login", user)
+      .post("http://43.201.179.98:8080/api/auth/login", user)
       .then((resp) => {
         alert(id + "님 로그인 되었습니다");
         console.log(resp);
@@ -58,7 +58,12 @@ function LoginPage() {
         setPwd("");
         setUserId(resp.data.loginId);
         setUserNickName(resp.data.nickname);
-        navigate("/main");
+        if (resp.data.role === "ROLE_USER") {
+          navigate("/main");
+        }
+        if (resp.data.role === "ROLE_ADMIN") {
+          navigate("/admin");
+        }
       })
       .catch((err) => {
         setId("");
