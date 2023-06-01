@@ -763,18 +763,6 @@ function MainPage() {
 
                   <Button
                     variant="outlined"
-                    style={{
-                      marginRight: "10px",
-                      width: "20%",
-                      fontSize: "12px",
-                    }}
-                    onClick={navigateToPersonal}
-                  >
-                    내 정보
-                  </Button>
-
-                  <Button
-                    variant="outlined"
                     style={{ width: "20%", fontSize: "12px" }}
                     onClick={() => logout()}
                   >
