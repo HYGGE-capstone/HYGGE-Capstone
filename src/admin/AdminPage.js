@@ -159,6 +159,7 @@ function AdminPage() {
       .then((resp) => {
         console.log(resp);
         handleClose();
+        getSchoolList();
       })
       .catch((err) => {
         handleClose();
@@ -844,7 +845,7 @@ function AdminPage() {
               <div>팀이름 : {teamInfo[1]}</div>
               <div>팀 주제 : {teamInfo[2]}</div>
               <div style={{ display: "flex" }}>
-                팀 설명 : {"  "}
+                팀 설명 :
                 <div dangerouslySetInnerHTML={{ __html: teamInfo[3] }} />
               </div>
               <div>팀 최대인원수 : {teamInfo[4]}</div>

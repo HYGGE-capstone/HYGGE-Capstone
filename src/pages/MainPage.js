@@ -307,6 +307,7 @@ function MainPage() {
         setTeamDescription("");
         setTeamMaxNum();
         getSubjectTeamList(subjectId);
+        getTeamList();
       })
       .catch((err) => {
         alert(err.response.data.message);
