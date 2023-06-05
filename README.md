@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+## 서비스 개요
+![팜플렛_3 01](https://github.com/HYGGE-capstone/frontend/assets/62550954/db3f29e6-2a10-44e0-9f1c-23e6e0320401)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## HYGGE 프론트엔드 팀
+| role | name | part | email |
+| :--: | :--: | :-- | :-- |
+| 팀장 | 송명준 | 프론트엔드 개발, UI 디자인, 프로젝트 관리 | song2948837@ajou.ac.kr |
 
-## Available Scripts
 
-In the project directory, you can run:
+## 기술스택
+### React
+Virtual Dom을 이용하여, 렌더링 속도를 향상시킬 수 있기 때문에 채택하였다. 또한, 컴포넌트를 재사용하여 생산성을 향상시킬 수 있고, 다양한 라이브러리를 지원하여 원하는 기능을 빠르게 구현할 수 있기에 사용하였다.
+### react-quill
+폰트 크기와 색상 등 다양한 기능을 제공하는 에디터이다. 서비스의 핵심 기능인 이력서 작성 시, 사용자가 원하는 파트를 강조하거나 어필할 때 유용하다. 또한 작성된 내용을 String형식으로 손쉽게 백엔드 서버와 통신할 수 있기에 채택하였다.
+    
+## 구현 설명
+### RegisterPage
+사용자는 학교 이메일을 사용하여 서비스에 회원가입을 할 수 있다. 또한, 이메일 인증을 거침으로서 학교 구성원임을 인증하고 대상 학교 페이지에서 서비스를 이용할 수 있다.
+### LoginPage
+사용자는 회원가입에서 진행한 아이디와 패스워드를 통해 로그인을 할 수 있다.
+### MainPage
+사용자는 과목 검색 및 구독, 팀 생성 및 지원, 지원 수락&거절, 팀원 제안, 제안 수락&거절, 이력서 작성 및 수정 등 서비스의 메인 기능을 수행할 수 있다.
+### ChatPage
+사용자는 구독한 과목에서의 새로운 팀 생성이나 구독자, 자신이 생성한 팀에서의 새로운 지원, 자신에게 온 지원이나 제안 등 다양한 알림을 확인할 수 있다.
+### MessagePage
+사용자는 다른 사용자와 쪽지를 통하여 팀 또는 팀원에 대해 궁금한 점을 소통할 수 있다.
+### AdminPage
+관리자는 학교, 수업을 추가하거나 수정, 삭제하여 서비스를 다른 학교로 확장할 수 있다. 또한, 생성된 팀의 정보를 조회하고 삭제할 수 있다.
 
-### `npm start`
+## 코딩 컨벤션
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. 들여쓰기 : 새로운 블록이 나타날 때마다 Tab을 사용하여 들여쓰기하도록 한다.
+2. 프로그램 명명 규칙 : variable, function 이름을 지정하는 데 있어 camel Case를 사용하고, component의 이름을 지정함에서는 Pascal Case를 사용한다.
+3. 주석 사용 : 함수명과 변수명으로 코드의 내용을 명시적으로 표현하고, 추가적인 설명이 필요한 부분은 주석을 사용하여 표현한다. 
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 백엔드
+https://github.com/HYGGE-capstone/backend
