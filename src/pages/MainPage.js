@@ -35,6 +35,7 @@ function MainPage() {
   const [open10, setOpen10] = React.useState(false);
   const [open11, setOpen11] = React.useState(false);
   const [open12, setOpen12] = React.useState(false);
+  const [open13, setOpen13] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
   const [select, setSelect] = useState("");
   const [subjectSection, setSubjectSection] = useState(-1);
@@ -52,6 +53,7 @@ function MainPage() {
   const [teamSubject, setTeamSubject] = useState("");
   const [teamMaxNum, setTeamMaxNum] = useState("");
   const [teamName, setTeamName] = useState("");
+  const [teamJongboModify, setTeamJongboModify] = useState("");
   const [userId, setUserId] = useRecoilState(useridState);
   const [userNickName, setUserNickName] = useRecoilState(userNickNameState);
   const [messageToId, setMessageToId] = useRecoilState(messageToIdState);
@@ -94,7 +96,14 @@ function MainPage() {
       ],
     },
   };
-  const handleClick = (id, name, leader, subjectId) => {
+  const handleClick = (
+    id,
+    name,
+    leader,
+    subjectId,
+    teamTitle,
+    teamDescription
+  ) => {
     setSelect(id);
     console.log(id);
     setSelectTeamName(name);
@@ -103,6 +112,8 @@ function MainPage() {
     setIsLeader(leader);
     getTeamMembers(id);
     setTeamSupplyInfo([]);
+    setTeamTitle(teamTitle);
+    setTeamJongboModify(teamDescription);
     // 가입 로직 실행
   };
   const handleClick2 = (id, name) => {
@@ -144,6 +155,13 @@ function MainPage() {
 
   const changeMessageContent = (event) => {
     setMessageContent(event.target.value);
+  };
+
+  const changeTeamJongoModify = (value) => {
+    setTeamJongboModify(value);
+  };
+  const changeTeamTitle = (event) => {
+    setTeamTitle(event.target.value);
   };
   const handleClickOpen = () => {
     setOpen(true);
@@ -239,6 +257,7 @@ function MainPage() {
 
   const handleClickOpen11 = (id, name) => {
     setOpen11(true);
+    console.log(resumeContent);
   };
 
   const handleClose11 = () => {
@@ -251,6 +270,14 @@ function MainPage() {
 
   const handleClose12 = () => {
     setOpen12(false);
+  };
+  const handleClickOpen13 = (id, name) => {
+    setOpen13(true);
+    console.log(teamJongboModify);
+  };
+
+  const handleClose13 = () => {
+    setOpen13(false);
   };
   const navigate = useNavigate();
 
@@ -584,6 +611,79 @@ function MainPage() {
         alert(err.response.data.message);
       });
   };
+  const teamInformChange = async () => {
+    const team = {
+      teamId: select,
+      teamName: selectTeamName,
+      teamTitle: teamTitle,
+      teamDescription: teamJonbo,
+    };
+    await api
+      .put(`v1/team/update`, team)
+      .then((resp) => {
+        console.log(resp);
+        handleClose13();
+      })
+      .catch((err) => {
+        handleClose13();
+        alert(err.response.data.message);
+      });
+  };
+  const teamDelete = async () => {
+    await api
+      .delete(`v1/team/dissolve?teamId=${select}`)
+      .then((resp) => {
+        console.log(resp);
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const teamMandate = async (memberId) => {
+    const member = {
+      teamId: select,
+      memberId: memberId,
+    };
+    await api
+      .post(`v1/team/mandate`, member)
+      .then((resp) => {
+        console.log(resp);
+        getTeamList();
+        setIsLeader(false);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const teamKickOut = async (memberId) => {
+    const member = {
+      teamId: select,
+      memberId: memberId,
+    };
+    await api
+      .post(`v1/team/kick-out`, member)
+      .then((resp) => {
+        console.log(resp);
+        getTeamMembers(select);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const teamLeave = async () => {
+    const member = {
+      teamId: select,
+    };
+    await api
+      .post(`v1/team/leave`, member)
+      .then((resp) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
   const getTeamSuggestList = async () => {
     //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(4);
@@ -827,7 +927,9 @@ function MainPage() {
                         data.teamId,
                         data.teamName,
                         data.leader,
-                        data.subjectId
+                        data.subjectId,
+                        data.teamTitle,
+                        data.teamDescription
                       )
                     }
                     className={`${select === data.teamId ? "select" : "team"}`}
@@ -944,7 +1046,7 @@ function MainPage() {
                             getTeamMembers(select);
                           }}
                         >
-                          팀 정보 보기
+                          팀 멤버 보기
                         </Button>
                         {isLeader && (
                           <Button
@@ -966,6 +1068,66 @@ function MainPage() {
                             }}
                           >
                             팀 미소속 구독자 보기
+                          </Button>
+                        )}
+                        {isLeader && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                            onClick={() => {
+                              handleClickOpen13();
+                            }}
+                          >
+                            팀 정보 수정
+                          </Button>
+                        )}
+                        {isLeader && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px", marginRight: "20px" }}
+                            onClick={() => {
+                              teamDelete();
+                            }}
+                          >
+                            팀 해체
+                          </Button>
+                        )}
+                        {isLeader === false && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                            onClick={() => {
+                              teamLeave();
+                            }}
+                          >
+                            팀 탈퇴
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="team-info-top2">
+                      <div className="team-top-button2">
+                        {isLeader && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px" }}
+                            onClick={() => {
+                              handleClickOpen13();
+                            }}
+                          >
+                            팀 정보 수정
+                          </Button>
+                        )}
+                        {isLeader && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px", marginRight: "30px" }}
+                            onClick={() => {
+                              getSubscriberList();
+                            }}
+                          >
+                            팀 해체
                           </Button>
                         )}
                       </div>
@@ -997,6 +1159,31 @@ function MainPage() {
                             >
                               이력서 보기
                             </Button>
+                            {isLeader && (
+                              <Button
+                                variant="outlined"
+                                style={{ marginLeft: "20px" }}
+                                onClick={() => {
+                                  teamMandate(data.memberId);
+                                }}
+                              >
+                                팀장 위임
+                              </Button>
+                            )}
+                            {isLeader && (
+                              <Button
+                                variant="outlined"
+                                style={{
+                                  marginLeft: "20px",
+                                  marginRight: "30px",
+                                }}
+                                onClick={() => {
+                                  teamKickOut(data.memberId);
+                                }}
+                              >
+                                팀원 추방
+                              </Button>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -1626,6 +1813,59 @@ function MainPage() {
                   전송
                 </Button>
                 <Button onClick={handleClose12} style={{ color: "#072e5d" }}>
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={open13}
+              onClose={handleClose13}
+              PaperProps={{ sx: { width: "60%", height: "60%" } }}
+            >
+              <DialogTitle
+                style={{
+                  background: "#072e5d",
+                  color: "white",
+                  marginBottom: "12px",
+                }}
+              >
+                팀 정보 수정
+              </DialogTitle>
+              <DialogContent>
+                <div
+                  className="resume-dialog-wrapper"
+                  style={{ height: "80%" }}
+                >
+                  팀 주제
+                  <TextField
+                    id="outlined-textarea"
+                    variant="standard"
+                    value={teamTitle}
+                    onChange={changeTeamTitle}
+                    style={{
+                      width: "100%",
+                      marginBottom: "12px",
+                      marginTop: "12px",
+                    }}
+                    InputProps={{
+                      style: {},
+                    }}
+                    multiline
+                  />
+                  팀 정보
+                  <ReactQuill
+                    value={teamJongboModify}
+                    onChange={changeTeamJongoModify}
+                    modules={modules}
+                  />
+                </div>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={teamInformChange} style={{ color: "#072e5d" }}>
+                  수정
+                </Button>
+                <Button onClick={handleClose13} style={{ color: "#072e5d" }}>
                   닫기
                 </Button>
               </DialogActions>

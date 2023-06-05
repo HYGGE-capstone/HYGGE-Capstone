@@ -475,7 +475,7 @@ hr {
   color: #919191;
   margin-left: 100px;
   display: flex;
-  width: 60%;
+  width: 35%;
 }
 .team-info-supplyName {
   font-weight: bold;
@@ -501,7 +501,15 @@ hr {
   border-width: 2px;
   justify-content: space-between;
 }
-
+.team-info-top2 {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: solid;
+  border-color: #d5d5d5;
+  border-width: 2px;
+  justify-content: right;
+}
 .team-top-name {
   display: flex;
   font-weight: bold;
@@ -525,6 +533,10 @@ hr {
 }
 .team-top-button {
   margin-right: 30px;
+}
+.team-top-button2 {
+  display: flex;
+  justify-content: right;
 }
 .sub-team-top {
   display: flex;
