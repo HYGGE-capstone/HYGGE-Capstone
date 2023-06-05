@@ -61,7 +61,7 @@ function ChatPage() {
   };
 
   return (
-    <div>
+    <div className="chat-page">
       <div className="main-top">
         <div className="main-wrapper">
           <div

@@ -96,19 +96,6 @@ function LoginPage() {
           >
             아이디가 없다면...{" "}
           </Link>
-          <button
-            type="button"
-            onClick={handleClickOpen}
-            style={{
-              color: "gray",
-              textDecoration: "none",
-              background: "white",
-              border: "none",
-              fontSize: "16px",
-            }}
-          >
-            아이디 찾기
-          </button>
         </div>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>아이디 찾기</DialogTitle>

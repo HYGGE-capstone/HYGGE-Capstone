@@ -291,7 +291,7 @@ function AdminPage() {
     getSchoolList();
   }, []);
   return (
-    <div>
+    <div className="admin-page">
       <div className="main-top">
         <div className="main-wrapper">
           <div

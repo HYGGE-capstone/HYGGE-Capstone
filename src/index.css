@@ -5,6 +5,20 @@
   font-style: normal;
 }
 
+@media (max-width: 1400px) {
+  .main-page {
+    min-width: 1400px;
+  }
+  .admin-page {
+    min-width: 1400px;
+  }
+  .chat-page {
+    min-width: 1400px;
+  }
+  .message-page {
+    min-width: 1400px;
+  }
+}
 .auth-wrapper {
   display: flex;
   flex-direction: column;
@@ -588,26 +602,8 @@ hr {
 .myjongbo-resume::-webkit-scrollbar {
   display:none;
 }
-@media only screen and (max-width: 783px) {
-  .mid-top-wrapper {
-    flex-direction: column;
-  }
-  .mid-down-wrapper {
-    flex-direction: column;
-  }
-  .left-down-wrapper {
-    width: 100%;
-  }
-  .left-top-wrapper {
-    width: 100%;
-  }
-  .right-down-wrapper {
-    width: 100%;
-  }
-  .right-top-wrapper {
-    width: 100%;
-  }
-}
+
+
 
 .personal-top {
   width: 100%;
