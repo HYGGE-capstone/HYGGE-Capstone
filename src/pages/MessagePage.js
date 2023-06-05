@@ -81,7 +81,6 @@ function ChatPage() {
     await api
       .get(`v1/message/room/${messageRoomId}`)
       .then((resp) => {
-        console.log(resp);
         //var tempMessage = resp.data;
         //tempMessage.reverse();
         //const newChatMessage = chatMessage.reverse();
@@ -90,7 +89,6 @@ function ChatPage() {
         setSelectMessageRoom(toNickname);
         setMessageToId(toId);
         getMessageRoomAfterDelete();
-        console.log(messageToId);
       })
       .catch((err) => {
         //console.log(err);

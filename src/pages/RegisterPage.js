@@ -46,8 +46,6 @@ function RegisterPage() {
 
   const changeEmail = (event) => {
     setEmail(event.target.value);
-    console.log(...register("users_email"));
-    console.log(watch);
   };
 
   const changeId = (event) => {
@@ -120,13 +118,11 @@ function RegisterPage() {
     await axios
       .post(`http://43.201.179.98:8080/api/auth/signup`, user) //임시
       .then((resp) => {
-        console.log(resp);
         alert("회원가입 완료!");
         navigate("/login");
       })
       .catch((err) => {
         alert("회원가입 실패!");
-        console.log(err);
       });
   };
 

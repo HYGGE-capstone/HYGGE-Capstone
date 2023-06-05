@@ -11,12 +11,10 @@ api.interceptors.request.use(
   function (config) {
     const accessToken = localStorage.getItem("accessToken");
 
-    console.log(accessToken);
     //요청시 AccessToken 계속 보내주기
     if (accessToken) {
       config.headers["Authorization"] = "Bearer " + accessToken;
     }
-    console.log(config);
     return config;
   },
   function (error) {
@@ -30,7 +28,6 @@ api.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    console.log("get response", response);
     return response;
   },
   async (error) => {
@@ -53,7 +50,6 @@ api.interceptors.response.use(
         token,
         { headers: { authorization: `Bearer ${accessToken}` } }
       );
-      console.log(data);
       // 새로운 토큰 저장
       // dispatch(userSlice.actions.setAccessToken(data.data.accessToken)); store에 저장
       const newAccessToken = data.accessToken;
@@ -66,7 +62,6 @@ api.interceptors.response.use(
     }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    console.log("response error", error);
     return Promise.reject(error);
   }
 );

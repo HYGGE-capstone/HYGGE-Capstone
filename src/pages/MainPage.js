@@ -36,6 +36,9 @@ function MainPage() {
   const [open11, setOpen11] = React.useState(false);
   const [open12, setOpen12] = React.useState(false);
   const [open13, setOpen13] = React.useState(false);
+  const [open14, setOpen14] = React.useState(false);
+  const [open15, setOpen15] = React.useState(false);
+  const [open16, setOpen16] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
   const [select, setSelect] = useState("");
   const [subjectSection, setSubjectSection] = useState(-1);
@@ -68,6 +71,8 @@ function MainPage() {
   const [selectOfferId, setSelectOfferId] = useState();
   const [selectOfferTeamName, setSelectOfferTeamName] = useState("");
   const [messageContent, setMessageContent] = useState("");
+  const [noticeContent, setNoticeContent] = useState("");
+  const [noticeId, setNoticeId] = useState();
   const [gudok, setGucok] = useState([]);
   const [isAlarm, setIsAlarm] = useState(false);
   const [isMessage, setIsMessage] = useState(false);
@@ -105,7 +110,6 @@ function MainPage() {
     teamDescription
   ) => {
     setSelect(id);
-    console.log(id);
     setSelectTeamName(name);
     setSelectSubjectId(subjectId);
     setSubjectSection(1);
@@ -162,6 +166,9 @@ function MainPage() {
   };
   const changeTeamTitle = (event) => {
     setTeamTitle(event.target.value);
+  };
+  const changeNoticeContent = (event) => {
+    setNoticeContent(event.target.value);
   };
   const handleClickOpen = () => {
     setOpen(true);
@@ -255,29 +262,48 @@ function MainPage() {
     setOpen10(false);
   };
 
-  const handleClickOpen11 = (id, name) => {
+  const handleClickOpen11 = () => {
     setOpen11(true);
-    console.log(resumeContent);
   };
 
   const handleClose11 = () => {
     setOpen11(false);
   };
 
-  const handleClickOpen12 = (id, name) => {
+  const handleClickOpen12 = () => {
     setOpen12(true);
   };
 
   const handleClose12 = () => {
     setOpen12(false);
   };
-  const handleClickOpen13 = (id, name) => {
+  const handleClickOpen13 = () => {
     setOpen13(true);
-    console.log(teamJongboModify);
   };
 
   const handleClose13 = () => {
     setOpen13(false);
+  };
+  const handleClickOpen14 = () => {
+    setOpen14(true);
+  };
+
+  const handleClose14 = () => {
+    setOpen14(false);
+  };
+  const handleClickOpen15 = () => {
+    setOpen15(true);
+  };
+
+  const handleClose15 = () => {
+    setOpen15(false);
+  };
+  const handleClickOpen16 = () => {
+    setOpen16(true);
+  };
+
+  const handleClose16 = () => {
+    setOpen16(false);
   };
   const navigate = useNavigate();
 
@@ -311,9 +337,7 @@ function MainPage() {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   const makeTeam = async () => {
     const newTeam = {
@@ -327,7 +351,6 @@ function MainPage() {
     await api
       .post(`v1/team/create`, newTeam, {})
       .then((resp) => {
-        console.log(resp);
         handleClose2();
         setTeamName("");
         setTeamSubject("");
@@ -355,8 +378,6 @@ function MainPage() {
     await api
       .get(`v1/subject/search?query=${inputValue}`) //임시
       .then((resp) => {
-        console.log(resp);
-        console.log(resp.data.subjects);
         setSubjectSection(0);
         setSubjectSearchResult(resp.data.subjects);
       })
@@ -370,7 +391,6 @@ function MainPage() {
     await api
       .get(`v1/team`)
       .then((resp) => {
-        console.log(resp);
         setTeam(resp.data.teams);
       })
       .catch((err) => {
@@ -378,7 +398,6 @@ function MainPage() {
       });
   };
   const subjectGudok = async () => {
-    console.log(subjectId);
     const id = {
       subjectId: subjectId,
     };
@@ -386,7 +405,6 @@ function MainPage() {
     await api
       .post(`v1/subscribe`, id)
       .then((resp) => {
-        console.log(resp);
         getGudok();
       })
       .catch((err) => {
@@ -409,7 +427,6 @@ function MainPage() {
     await api
       .post(`v1/resume`, resume)
       .then((resp) => {
-        console.log(resp);
         handleClose();
         subjectGudok();
       })
@@ -424,13 +441,11 @@ function MainPage() {
     await api
       .get(`v1/resume/subject/${selectSubjectId}/member/${memberId}`)
       .then((resp) => {
-        console.log(resp);
         setShowResumeTitle(resp.data.title);
         setShowResumeContent(resp.data.content);
         handleClickOpen4();
       })
       .catch((err) => {
-        console.log(err.response.data.message);
         alert(err.response.data.message);
       });
   };
@@ -443,7 +458,6 @@ function MainPage() {
     await api
       .post(`v1/applicant`, teamApply)
       .then((resp) => {
-        console.log(resp);
         handleClose5();
       })
       .catch((err) => {
@@ -460,7 +474,6 @@ function MainPage() {
     await api
       .post(`v1/applicant/accept`, teamApply)
       .then((resp) => {
-        console.log(resp);
         getTeamApplyList();
         handleClose6();
       })
@@ -477,7 +490,6 @@ function MainPage() {
     await api
       .post(`v1/applicant/reject`, teamApply)
       .then((resp) => {
-        console.log(resp);
         getTeamApplyList();
         handleClose7();
       })
@@ -496,12 +508,10 @@ function MainPage() {
     await api
       .post(`v1/offer`, teamSuggest)
       .then((resp) => {
-        console.log(resp);
         getSubscriberList();
         handleClose8();
       })
       .catch((err) => {
-        console.log(err);
         alert(err.response.data.message);
         handleClose8();
       });
@@ -515,7 +525,6 @@ function MainPage() {
     await api
       .post(`v1/offer/accept`, offer)
       .then((resp) => {
-        console.log(resp);
         getTeamSuggestList();
         getTeamList();
         handleClose9();
@@ -533,7 +542,6 @@ function MainPage() {
     await api
       .post(`v1/offer/reject`, offer)
       .then((resp) => {
-        console.log(resp);
         getTeamSuggestList();
         handleClose10();
       })
@@ -551,7 +559,6 @@ function MainPage() {
     await api
       .post(`v1/message`, message)
       .then((resp) => {
-        console.log(resp);
         setMessageToId(resp.data.toId);
         handleClose12();
         navigateToMessage();
@@ -566,7 +573,6 @@ function MainPage() {
     await api
       .get(`v1/resume/subject/${subjectId}/me`)
       .then((resp) => {
-        console.log(resp);
         setResumeTitle(resp.data.title);
         setResumeContent(resp.data.content);
         setResumeId(resp.data.resumeId);
@@ -587,7 +593,6 @@ function MainPage() {
     await api
       .put(`v1/resume`, resume)
       .then((resp) => {
-        console.log(resp);
         handleClose11();
       })
       .catch((err) => {
@@ -603,7 +608,6 @@ function MainPage() {
     await api
       .post(`v1/subscribe/cancel`, subject)
       .then((resp) => {
-        console.log(resp);
         getGudok();
         getTeamList();
       })
@@ -621,7 +625,6 @@ function MainPage() {
     await api
       .put(`v1/team/update`, team)
       .then((resp) => {
-        console.log(resp);
         handleClose13();
       })
       .catch((err) => {
@@ -633,7 +636,6 @@ function MainPage() {
     await api
       .delete(`v1/team/dissolve?teamId=${select}`)
       .then((resp) => {
-        console.log(resp);
         window.location.reload();
       })
       .catch((err) => {
@@ -648,7 +650,6 @@ function MainPage() {
     await api
       .post(`v1/team/mandate`, member)
       .then((resp) => {
-        console.log(resp);
         getTeamList();
         setIsLeader(false);
       })
@@ -664,7 +665,6 @@ function MainPage() {
     await api
       .post(`v1/team/kick-out`, member)
       .then((resp) => {
-        console.log(resp);
         getTeamMembers(select);
       })
       .catch((err) => {
@@ -684,13 +684,91 @@ function MainPage() {
         alert(err.response.data.message);
       });
   };
+  const postNotice = async () => {
+    const notice = {
+      teamId: select,
+      noticeContent: noticeContent,
+    };
+    await api
+      .post(`v1/notice`, notice)
+      .then((resp) => {
+        setNoticeContent(resp.data.noticeContent);
+        setNoticeId(resp.data.noticeId);
+        handleClose14();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        handleClose14();
+      });
+  };
+  const changeNotice = async () => {
+    const notice = {
+      noticeId: noticeId,
+      noticeContent: noticeContent,
+    };
+    await api
+      .put(`v1/notice`, notice)
+      .then((resp) => {
+        handleClose15();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+        handleClose15();
+      });
+  };
+  const deleteNotice = async (noticeId) => {
+    await api
+      .delete(`v1/notice?noticeId=${noticeId}`)
+      .then((resp) => {
+        setNoticeContent("");
+        setNoticeId();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const getNoticeDelete = async () => {
+    await api
+      .get(`v1/notice?teamId=${select}`)
+      .then((resp) => {
+        setNoticeContent(resp.data.noticeContent);
+        setNoticeId(resp.data.noticeId);
+        deleteNotice(resp.data.noticeId);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const getNoticeOpen = async () => {
+    await api
+      .get(`v1/notice?teamId=${select}`)
+      .then((resp) => {
+        setNoticeContent(resp.data.noticeContent);
+        setNoticeId(resp.data.noticeId);
+        handleClickOpen16();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const getNoticeOpenChange = async () => {
+    await api
+      .get(`v1/notice?teamId=${select}`)
+      .then((resp) => {
+        setNoticeContent(resp.data.noticeContent);
+        setNoticeId(resp.data.noticeId);
+        handleClickOpen15();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
   const getTeamSuggestList = async () => {
     //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(4);
     await api
       .get(`v1/offer?subjectId=${subjectId}`)
       .then((resp) => {
-        console.log(resp);
         setTeamSuggestList(resp.data.offerTeams);
       })
       .catch((err) => {
@@ -703,7 +781,6 @@ function MainPage() {
     await api
       .get(`v1/noti/check`)
       .then((resp) => {
-        console.log(resp);
         setIsAlarm(resp.data.dirty);
       })
       .catch((err) => {
@@ -715,7 +792,6 @@ function MainPage() {
     await api
       .get(`v1/message/check/total`)
       .then((resp) => {
-        console.log(resp);
         setIsMessage(resp.data.dirty);
       })
       .catch((err) => {
@@ -727,11 +803,9 @@ function MainPage() {
     await api
       .get(`v1/subscribe`)
       .then((resp) => {
-        console.log(resp);
         setGucok(resp.data.subscribes);
       })
       .catch((err) => {
-        console.log(err);
         alert(err.response.data.message);
       });
   };
@@ -742,7 +816,6 @@ function MainPage() {
     await api
       .get(`v1/team/subscribers?subjectId=${selectSubjectId}`)
       .then((resp) => {
-        console.log(resp);
         setSubscriberList(resp.data.members);
       })
       .catch((err) => {
@@ -755,7 +828,6 @@ function MainPage() {
     await api
       .get(`v1/team/search?subjectId=${id}`)
       .then((resp) => {
-        console.log(resp);
         setSubTeamInfo(resp.data.teams);
       })
       .catch((err) => {
@@ -768,9 +840,7 @@ function MainPage() {
     await api
       .get(`v1/team/members?teamId=${id}`)
       .then((resp) => {
-        console.log(resp);
         setTeamInfo(resp.data.members);
-        console.log(teamInfo);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -779,14 +849,11 @@ function MainPage() {
 
   const getTeamApplyList = async () => {
     setTeamTopButton(1);
-    console.log(select);
     //const accessToken = localStorage.getItem("accessToken");
     await api
       .get(`v1/applicant?teamId=${select}`)
       .then((resp) => {
-        console.log(resp);
         setTeamSupplyInfo(resp.data.applicants);
-        console.log(teamSupplyInfo);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -1084,7 +1151,7 @@ function MainPage() {
                         {isLeader && (
                           <Button
                             variant="outlined"
-                            style={{ marginLeft: "20px", marginRight: "20px" }}
+                            style={{ marginLeft: "20px", marginRight: "10px" }}
                             onClick={() => {
                               teamDelete();
                             }}
@@ -1113,21 +1180,43 @@ function MainPage() {
                             variant="outlined"
                             style={{ marginLeft: "20px" }}
                             onClick={() => {
-                              handleClickOpen13();
+                              handleClickOpen14();
                             }}
                           >
-                            팀 정보 수정
+                            공지 등록
                           </Button>
                         )}
                         {isLeader && (
                           <Button
                             variant="outlined"
-                            style={{ marginLeft: "20px", marginRight: "30px" }}
+                            style={{ marginLeft: "20px" }}
                             onClick={() => {
-                              getSubscriberList();
+                              getNoticeOpenChange();
                             }}
                           >
-                            팀 해체
+                            공지 수정
+                          </Button>
+                        )}
+                        {isLeader && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px", marginRight: "40px" }}
+                            onClick={() => {
+                              getNoticeDelete();
+                            }}
+                          >
+                            공지 삭제
+                          </Button>
+                        )}
+                        {isLeader === false && (
+                          <Button
+                            variant="outlined"
+                            style={{ marginLeft: "20px", marginRight: "40px" }}
+                            onClick={() => {
+                              getNoticeOpen();
+                            }}
+                          >
+                            공지 조회
                           </Button>
                         )}
                       </div>
@@ -1866,6 +1955,95 @@ function MainPage() {
                   수정
                 </Button>
                 <Button onClick={handleClose13} style={{ color: "#072e5d" }}>
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={open14}
+              onClose={handleClose14}
+              PaperProps={{ sx: { width: "60%", height: "40%" } }}
+            >
+              <DialogTitle style={{ background: "#072e5d", color: "white" }}>
+                공지 등록
+              </DialogTitle>
+
+              <DialogContent style={{ marginTop: "30px" }}>
+                <TextField
+                  id="outlined-textarea"
+                  variant="standard"
+                  value={noticeContent}
+                  onChange={changeNoticeContent}
+                  style={{
+                    width: "100%",
+                    marginBottom: "12px",
+                  }}
+                  InputProps={{
+                    style: {},
+                  }}
+                  multiline
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={postNotice} style={{ color: "#072e5d" }}>
+                  등록
+                </Button>
+                <Button onClick={handleClose14} style={{ color: "#072e5d" }}>
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={open15}
+              onClose={handleClose15}
+              PaperProps={{ sx: { width: "60%", height: "40%" } }}
+            >
+              <DialogTitle style={{ background: "#072e5d", color: "white" }}>
+                공지 수정
+              </DialogTitle>
+
+              <DialogContent style={{ marginTop: "30px" }}>
+                <TextField
+                  id="outlined-textarea"
+                  variant="standard"
+                  value={noticeContent}
+                  onChange={changeNoticeContent}
+                  style={{
+                    width: "100%",
+                    marginBottom: "12px",
+                  }}
+                  InputProps={{
+                    style: {},
+                  }}
+                  multiline
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={changeNotice} style={{ color: "#072e5d" }}>
+                  수정
+                </Button>
+                <Button onClick={handleClose15} style={{ color: "#072e5d" }}>
+                  닫기
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            <Dialog
+              open={open16}
+              onClose={handleClose16}
+              PaperProps={{ sx: { width: "60%", height: "40%" } }}
+            >
+              <DialogTitle style={{ background: "#072e5d", color: "white" }}>
+                공지 보기
+              </DialogTitle>
+
+              <DialogContent style={{ marginTop: "30px" }}>
+                {noticeContent}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose16} style={{ color: "#072e5d" }}>
                   닫기
                 </Button>
               </DialogActions>

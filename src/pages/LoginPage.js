@@ -49,11 +49,9 @@ function LoginPage() {
       .post("http://43.201.179.98:8080/api/auth/login", user)
       .then((resp) => {
         alert(id + "님 로그인 되었습니다");
-        console.log(resp);
         localStorage.setItem("accessToken", resp.data.accessToken);
         localStorage.setItem("refreshToken", resp.data.refreshToken);
         const accessToken = localStorage.getItem("accessToken");
-        console.log(accessToken);
         setId("");
         setPwd("");
         setUserId(resp.data.loginId);

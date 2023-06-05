@@ -32,18 +32,13 @@ function ChatPage() {
         },
       })
       .then((resp) => {
-        console.log(resp);
         var tempChatMessage = resp.data.notifications;
-        console.log(tempChatMessage);
         tempChatMessage.reverse();
-        console.log(tempChatMessage);
         //const newChatMessage = chatMessage.reverse();
         setChatMessage(tempChatMessage);
         //console.log(chatMessage);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   useEffect(() => {
     getSystemAlarm();

@@ -106,7 +106,6 @@ function AdminPage() {
 
   const handleClickOpen5 = (data) => {
     setTeamInfo(Object.values(data));
-    console.log(Object.values(data));
     setOpen5(true);
   };
 
@@ -157,7 +156,6 @@ function AdminPage() {
     await api
       .post(`admin/school`, school)
       .then((resp) => {
-        console.log(resp);
         handleClose();
         getSchoolList();
       })
@@ -175,7 +173,6 @@ function AdminPage() {
     await api
       .put(`admin/school`, school)
       .then((resp) => {
-        console.log(resp);
         handleClose2();
         getSchoolList();
       })
@@ -197,7 +194,6 @@ function AdminPage() {
     await api
       .post(`admin/subject`, subject)
       .then((resp) => {
-        console.log(resp);
         handleClose3();
         getSubjectList(selectSchoolId);
       })
@@ -208,7 +204,6 @@ function AdminPage() {
   };
 
   const subjectChange = async () => {
-    console.log(selectSubjectId);
     const subject = {
       subjectId: selectSubjectId,
       schoolId: selectSchoolId,
@@ -222,7 +217,6 @@ function AdminPage() {
     await api
       .put(`admin/subject`, subject)
       .then((resp) => {
-        console.log(resp);
         handleClose4();
         getSubjectList(selectSchoolId);
       })
@@ -236,7 +230,6 @@ function AdminPage() {
     await api
       .delete(`admin/subject?subjectId=${subjectId}`)
       .then((resp) => {
-        console.log(resp);
         getSubjectList(selectSchoolId);
       })
       .catch((err) => {
@@ -248,7 +241,6 @@ function AdminPage() {
     await api
       .delete(`admin/team?teamId=${teamId}`)
       .then((resp) => {
-        console.log(resp);
         getTeamList(selectSubjectId);
       })
       .catch((err) => {
@@ -259,7 +251,6 @@ function AdminPage() {
     await api
       .get(`admin/team?subjectId=${subjectId}`)
       .then((resp) => {
-        console.log(resp);
         setTeamList(resp.data.teams);
       })
       .catch((err) => {
@@ -270,7 +261,6 @@ function AdminPage() {
     await api
       .get(`admin/subject?schoolId=${schoolId}`)
       .then((resp) => {
-        console.log(resp);
         setSubjectList(resp.data);
       })
       .catch((err) => {
