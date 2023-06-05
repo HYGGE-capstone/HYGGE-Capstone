@@ -568,6 +568,22 @@ function MainPage() {
         alert(err.response.data.message);
       });
   };
+
+  const subjectCancel = async (subjectId) => {
+    const subject = {
+      subjectId: subjectId,
+    };
+    await api
+      .post(`v1/subscribe/cancel`, subject)
+      .then((resp) => {
+        console.log(resp);
+        getGudok();
+        getTeamList();
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
   const getTeamSuggestList = async () => {
     //const accessToken = localStorage.getItem("accessToken");
     setTeamTopButton(4);
@@ -864,7 +880,10 @@ function MainPage() {
                         />
 
                         <Dropdown.Menu>
-                          <Dropdown.Item href="#/action-1">
+                          <Dropdown.Item
+                            href="#/action-1"
+                            onClick={() => subjectCancel(data.subjectId)}
+                          >
                             구독 해제
                           </Dropdown.Item>
                           <Dropdown.Item
