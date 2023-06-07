@@ -344,6 +344,7 @@ function MainPage() {
         setUserNickName("");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        alert("로그아웃하였습니다.");
       })
       .catch((err) => {});
   };
@@ -366,6 +367,7 @@ function MainPage() {
         setTeamMaxNum();
         getSubjectTeamList(subjectId);
         getTeamList();
+        alert("팀 생성 완료했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -414,6 +416,7 @@ function MainPage() {
       .post(`v1/subscribe`, id)
       .then((resp) => {
         getGudok();
+        alert("구독 완료했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -467,6 +470,7 @@ function MainPage() {
       .post(`v1/applicant`, teamApply)
       .then((resp) => {
         handleClose5();
+        alert("지원 완료했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -484,6 +488,7 @@ function MainPage() {
       .then((resp) => {
         getTeamApplyList();
         handleClose6();
+        alert("지원을 수락했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -500,6 +505,7 @@ function MainPage() {
       .then((resp) => {
         getTeamApplyList();
         handleClose7();
+        alert("지원을 거절했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -518,6 +524,7 @@ function MainPage() {
       .then((resp) => {
         getSubscriberList();
         handleClose8();
+        alert("팀 합류 제안을 전송했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -536,6 +543,7 @@ function MainPage() {
         getTeamSuggestList();
         getTeamList();
         handleClose9();
+        alert("팀 합류 제안을 수락했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -552,6 +560,7 @@ function MainPage() {
       .then((resp) => {
         getTeamSuggestList();
         handleClose10();
+        alert("팀 합류 제안을 거절했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -602,6 +611,7 @@ function MainPage() {
       .put(`v1/resume`, resume)
       .then((resp) => {
         handleClose11();
+        alert("이력서를 수정했습니다.");
       })
       .catch((err) => {
         handleClose11();
@@ -618,6 +628,7 @@ function MainPage() {
       .then((resp) => {
         getGudok();
         getTeamList();
+        alert("구독 취소 완료했습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -634,6 +645,7 @@ function MainPage() {
       .put(`v1/team/update`, team)
       .then((resp) => {
         handleClose13();
+        alert("팀 정보 수정을 완료했습니다.");
       })
       .catch((err) => {
         handleClose13();
@@ -644,6 +656,7 @@ function MainPage() {
     await api
       .delete(`v1/team/dissolve?teamId=${select}`)
       .then((resp) => {
+        alert("팀 해체 완료했습니다.");
         window.location.reload();
       })
       .catch((err) => {
@@ -660,6 +673,7 @@ function MainPage() {
       .then((resp) => {
         getTeamList();
         setIsLeader(false);
+        alert("팀장 위임 완료되었습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -674,6 +688,7 @@ function MainPage() {
       .post(`v1/team/kick-out`, member)
       .then((resp) => {
         getTeamMembers(select);
+        alert("팀원 추방 완료되었습니다.");
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -686,6 +701,7 @@ function MainPage() {
     await api
       .post(`v1/team/leave`, member)
       .then((resp) => {
+        alert("팀 탈퇴 완료했습니다.");
         window.location.reload();
       })
       .catch((err) => {
@@ -752,7 +768,7 @@ function MainPage() {
         setNoticeId(resp.data.noticeId);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        //alert(err.response.data.message);
       });
   };
   const getNoticeDelete = async () => {
@@ -1064,7 +1080,7 @@ function MainPage() {
                         {data.year}년 {data.semester}학기
                       </div>
                       <div className="subject-name">
-                        {data.name} {data.code}
+                        {data.name} ({data.code})
                       </div>
                     </div>
                     <div className="subject-button">
@@ -1219,9 +1235,18 @@ function MainPage() {
                                 [공지]
                               </div>
                             )}
+                            {noticeContent.length === 0 && (
+                              <div
+                                style={{ color: "black", whiteSpace: "nowrap" }}
+                              >
+                                아직 등록된 공지가 없습니다.
+                              </div>
+                            )}
                             &nbsp;&nbsp;
-                            {isNotice && reNoticeContent}
-                            {isNotice === false && tempNoticeContent}
+                            <div style={{ color: "black" }}>
+                              {isNotice && reNoticeContent}
+                              {isNotice === false && tempNoticeContent}
+                            </div>
                           </div>
                           {isNotice === false && (
                             <KeyboardArrowDownIcon
@@ -1275,20 +1300,6 @@ function MainPage() {
                               }}
                             >
                               공지 삭제
-                            </Button>
-                          )}
-                          {isLeader === false && isNotice && (
-                            <Button
-                              variant="outlined"
-                              style={{
-                                marginLeft: "20px",
-                                marginRight: "40px",
-                              }}
-                              onClick={() => {
-                                getNoticeOpen();
-                              }}
-                            >
-                              공지 조회
                             </Button>
                           )}
                         </div>
@@ -1730,7 +1741,7 @@ function MainPage() {
               PaperProps={{ sx: { width: "60%", height: "60%" } }}
             >
               <DialogTitle style={{ background: "#072e5d", color: "white" }}>
-                제목 :{showResumeTitle}
+                제목 : {showResumeTitle}
               </DialogTitle>
               <div
                 style={{
