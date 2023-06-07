@@ -277,13 +277,30 @@ function AdminPage() {
         alert(err.response.data.message);
       });
   };
+  const logout = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const token = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    };
+    await api
+      .post(`auth/logout`, token)
+      .then((resp) => {
+        navigate("/login");
+        setUserId("");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      })
+      .catch((err) => {});
+  };
   useEffect(() => {
     getSchoolList();
   }, []);
   return (
     <div className="admin-page">
       <div className="main-top">
-        <div className="main-wrapper">
+        <div className="main-wrapper" style={{ display: "flex" }}>
           <div
             className="top-name"
             onClick={() => navigateToAdmin()}
@@ -291,6 +308,12 @@ function AdminPage() {
           >
             아주좋은팀 ADMIN
           </div>
+          <Button
+            onClick={logout}
+            style={{ color: "white", marginLeft: "60px" }}
+          >
+            로그아웃
+          </Button>
         </div>
       </div>
       <div className="admin-mid">

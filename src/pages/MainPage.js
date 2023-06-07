@@ -21,6 +21,8 @@ import "react-quill/dist/quill.snow.css";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button2 from "react-bootstrap/Button";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function MainPage() {
   const [open, setOpen] = React.useState(false);
@@ -72,8 +74,11 @@ function MainPage() {
   const [selectOfferTeamName, setSelectOfferTeamName] = useState("");
   const [messageContent, setMessageContent] = useState("");
   const [noticeContent, setNoticeContent] = useState("");
+  const [tempNoticeContent, setTempNoticeContent] = useState("");
+  const [reNoticeContent, setReNoticeContent] = useState("");
   const [noticeId, setNoticeId] = useState();
   const [gudok, setGucok] = useState([]);
+  const [isNotice, setIsNotice] = useState(false);
   const [isAlarm, setIsAlarm] = useState(false);
   const [isMessage, setIsMessage] = useState(false);
   const [isLeader, setIsLeader] = useState(false);
@@ -118,6 +123,7 @@ function MainPage() {
     setTeamSupplyInfo([]);
     setTeamTitle(teamTitle);
     setTeamJongboModify(teamDescription);
+    getNotice(id);
     // 가입 로직 실행
   };
   const handleClick2 = (id, name) => {
@@ -268,6 +274,8 @@ function MainPage() {
 
   const handleClose11 = () => {
     setOpen11(false);
+    setResumeTitle("");
+    setResumeContent("");
   };
 
   const handleClickOpen12 = () => {
@@ -694,6 +702,8 @@ function MainPage() {
       .then((resp) => {
         setNoticeContent(resp.data.noticeContent);
         setNoticeId(resp.data.noticeId);
+        makeTempNoticeContent(resp.data.noticeContent);
+        setReNoticeContent(resp.data.noticeContent);
         handleClose14();
       })
       .catch((err) => {
@@ -710,6 +720,8 @@ function MainPage() {
       .put(`v1/notice`, notice)
       .then((resp) => {
         handleClose15();
+        makeTempNoticeContent(resp.data.noticeContent);
+        setReNoticeContent(resp.data.noticeContent);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -722,6 +734,22 @@ function MainPage() {
       .then((resp) => {
         setNoticeContent("");
         setNoticeId();
+        setTempNoticeContent("");
+        setReNoticeContent("");
+        setIsNotice(false);
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+  const getNotice = async (select) => {
+    await api
+      .get(`v1/notice?teamId=${select}`)
+      .then((resp) => {
+        setNoticeContent(resp.data.noticeContent);
+        setReNoticeContent(resp.data.noticeContent);
+        makeTempNoticeContent(resp.data.noticeContent);
+        setNoticeId(resp.data.noticeId);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -732,6 +760,7 @@ function MainPage() {
       .get(`v1/notice?teamId=${select}`)
       .then((resp) => {
         setNoticeContent(resp.data.noticeContent);
+        setReNoticeContent(resp.data.noticeContent);
         setNoticeId(resp.data.noticeId);
         deleteNotice(resp.data.noticeId);
       })
@@ -744,6 +773,7 @@ function MainPage() {
       .get(`v1/notice?teamId=${select}`)
       .then((resp) => {
         setNoticeContent(resp.data.noticeContent);
+        setReNoticeContent(resp.data.noticeContent);
         setNoticeId(resp.data.noticeId);
         handleClickOpen16();
       })
@@ -756,6 +786,7 @@ function MainPage() {
       .get(`v1/notice?teamId=${select}`)
       .then((resp) => {
         setNoticeContent(resp.data.noticeContent);
+        setReNoticeContent(resp.data.noticeContent);
         setNoticeId(resp.data.noticeId);
         handleClickOpen15();
       })
@@ -866,6 +897,10 @@ function MainPage() {
     getMessageCheck();
   }, []);
 
+  const makeTempNoticeContent = (str) => {
+    var temp = str.substring(0, 30);
+    setTempNoticeContent(temp);
+  };
   return (
     <div className="main-page">
       <div className="main-top">
@@ -1082,7 +1117,7 @@ function MainPage() {
                         >
                           {data.name} ({data.code})
                           <div className="subject-search-prof">
-                            {data.pname}
+                            {data.professorName}
                           </div>
                         </div>
                         <div className="subject-search-button">
@@ -1175,50 +1210,88 @@ function MainPage() {
 
                     <div className="team-info-top2">
                       <div className="team-top-button2">
-                        {isLeader && (
-                          <Button
-                            variant="outlined"
-                            style={{ marginLeft: "20px" }}
-                            onClick={() => {
-                              handleClickOpen14();
-                            }}
-                          >
-                            공지 등록
-                          </Button>
-                        )}
-                        {isLeader && (
-                          <Button
-                            variant="outlined"
-                            style={{ marginLeft: "20px" }}
-                            onClick={() => {
-                              getNoticeOpenChange();
-                            }}
-                          >
-                            공지 수정
-                          </Button>
-                        )}
-                        {isLeader && (
-                          <Button
-                            variant="outlined"
-                            style={{ marginLeft: "20px", marginRight: "40px" }}
-                            onClick={() => {
-                              getNoticeDelete();
-                            }}
-                          >
-                            공지 삭제
-                          </Button>
-                        )}
-                        {isLeader === false && (
-                          <Button
-                            variant="outlined"
-                            style={{ marginLeft: "20px", marginRight: "40px" }}
-                            onClick={() => {
-                              getNoticeOpen();
-                            }}
-                          >
-                            공지 조회
-                          </Button>
-                        )}
+                        <div className="temp">
+                          <div className="temp2">
+                            {noticeContent.length > 0 && (
+                              <div
+                                style={{ color: "red", whiteSpace: "nowrap" }}
+                              >
+                                [공지]
+                              </div>
+                            )}
+                            &nbsp;&nbsp;
+                            {isNotice && reNoticeContent}
+                            {isNotice === false && tempNoticeContent}
+                          </div>
+                          {isNotice === false && (
+                            <KeyboardArrowDownIcon
+                              style={{ fontSize: "40px" }}
+                              onClick={() => {
+                                setIsNotice(!isNotice);
+                              }}
+                            />
+                          )}
+                          {isNotice === true && (
+                            <KeyboardArrowUpIcon
+                              style={{ fontSize: "40px" }}
+                              onClick={() => {
+                                setIsNotice(!isNotice);
+                              }}
+                            />
+                          )}
+                        </div>
+                        <div className="temp-top-button-group">
+                          {isLeader && isNotice && (
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                              onClick={() => {
+                                handleClickOpen14();
+                              }}
+                            >
+                              공지 등록
+                            </Button>
+                          )}
+                          {isLeader && isNotice && (
+                            <Button
+                              variant="outlined"
+                              style={{ marginLeft: "20px" }}
+                              onClick={() => {
+                                getNoticeOpenChange();
+                              }}
+                            >
+                              공지 수정
+                            </Button>
+                          )}
+                          {isLeader && isNotice && (
+                            <Button
+                              variant="outlined"
+                              style={{
+                                marginLeft: "20px",
+                                marginRight: "40px",
+                              }}
+                              onClick={() => {
+                                getNoticeDelete();
+                              }}
+                            >
+                              공지 삭제
+                            </Button>
+                          )}
+                          {isLeader === false && isNotice && (
+                            <Button
+                              variant="outlined"
+                              style={{
+                                marginLeft: "20px",
+                                marginRight: "40px",
+                              }}
+                              onClick={() => {
+                                getNoticeOpen();
+                              }}
+                            >
+                              공지 조회
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
                     {subjectSection === 1 &&
@@ -1230,25 +1303,29 @@ function MainPage() {
                             <div className="team-info-id">({data.loginId})</div>
                           </div>
                           <div className="team-info-button">
-                            <Button
-                              variant="outlined"
-                              style={{ marginLeft: "20px" }}
-                              onClick={() => {
-                                OpenMessageForm(data.memberId);
-                              }}
-                            >
-                              쪽지
-                            </Button>
-                            <Button
-                              variant="outlined"
-                              style={{ marginLeft: "20px" }}
-                              onClick={() => {
-                                showMemberResume(data.memberId);
-                              }}
-                            >
-                              이력서 보기
-                            </Button>
-                            {isLeader && (
+                            {userId !== data.loginId && (
+                              <Button
+                                variant="outlined"
+                                style={{ marginLeft: "20px" }}
+                                onClick={() => {
+                                  OpenMessageForm(data.memberId);
+                                }}
+                              >
+                                쪽지
+                              </Button>
+                            )}
+                            {userId !== data.loginId && (
+                              <Button
+                                variant="outlined"
+                                style={{ marginLeft: "20px" }}
+                                onClick={() => {
+                                  showMemberResume(data.memberId);
+                                }}
+                              >
+                                이력서 보기
+                              </Button>
+                            )}
+                            {isLeader && userId !== data.loginId && (
                               <Button
                                 variant="outlined"
                                 style={{ marginLeft: "20px" }}
@@ -1259,7 +1336,7 @@ function MainPage() {
                                 팀장 위임
                               </Button>
                             )}
-                            {isLeader && (
+                            {isLeader && userId !== data.loginId && (
                               <Button
                                 variant="outlined"
                                 style={{

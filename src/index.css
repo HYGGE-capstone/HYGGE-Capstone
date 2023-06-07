@@ -484,6 +484,7 @@ hr {
   margin-left: 100px;
   width: 40%;
 }
+
 .team-info-id {
   color: #919191;
   font-size: 20px;
@@ -504,11 +505,32 @@ hr {
 .team-info-top2 {
   display: flex;
   align-items: center;
-  height: 60px;
+  height: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border-bottom: solid;
   border-color: #d5d5d5;
   border-width: 2px;
-  justify-content: right;
+  justify-content: center;
+}
+.temp {
+  font-weight: bold;
+  font-size: 20px;
+  color: #919191;
+  width: 100%;
+  margin-left: 30px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.temp2 {
+  display: flex;
+  justify-content: center;
+  width: 70%;
+}
+.temp-top-button-group {
+  display: flex;
+  justify-content: center;
 }
 .team-top-name {
   display: flex;
@@ -537,6 +559,8 @@ hr {
 .team-top-button2 {
   display: flex;
   justify-content: right;
+  flex-direction: column;
+  width: 100%
 }
 .sub-team-top {
   display: flex;
