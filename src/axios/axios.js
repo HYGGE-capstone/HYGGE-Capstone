@@ -2,7 +2,7 @@ import axios from "axios";
 
 // url 호출 시 기본 값 셋팅
 const api = axios.create({
-  baseURL: "http://43.201.179.98:8080/api/",
+  baseURL: "http://43.201.179.98:80/api/",
   headers: { "Content-type": "application/json" }, // data type
 });
 
@@ -46,7 +46,7 @@ api.interceptors.response.use(
       };
       // token refresh 요청
       const { data } = await axios.post(
-        `http://43.201.179.98:8080/api/auth/reissue`, // token refresh api
+        `http://43.201.179.98:80/api/auth/reissue`, // token refresh api
         token,
         { headers: { authorization: `Bearer ${accessToken}` } }
       );

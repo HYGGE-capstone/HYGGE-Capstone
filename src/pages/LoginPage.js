@@ -46,7 +46,7 @@ function LoginPage() {
       password: pwd,
     };
     await axios
-      .post("http://43.201.179.98:8080/api/auth/login", user)
+      .post("http://43.201.179.98:80/api/auth/login", user)
       .then((resp) => {
         alert(id + "님 로그인 되었습니다");
         localStorage.setItem("accessToken", resp.data.accessToken);

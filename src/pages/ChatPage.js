@@ -26,7 +26,7 @@ function ChatPage() {
   const getSystemAlarm = async () => {
     const accessToken = localStorage.getItem("accessToken");
     await axios
-      .get(`http://43.201.179.98:8080/api/v1/noti`, {
+      .get(`http://43.201.179.98:80/api/v1/noti`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
