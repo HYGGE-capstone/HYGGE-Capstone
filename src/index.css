@@ -5,18 +5,18 @@
   font-style: normal;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1200px) {
   .main-page {
-    min-width: 1400px;
+    min-width: 1200px;
   }
   .admin-page {
-    min-width: 1400px;
+    min-width: 1200px;
   }
   .chat-page {
-    min-width: 1400px;
+    min-width: 1200px;
   }
   .message-page {
-    min-width: 1400px;
+    min-width: 1200px;
   }
 }
 .auth-wrapper {
