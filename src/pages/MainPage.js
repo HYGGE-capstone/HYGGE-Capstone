@@ -769,6 +769,10 @@ function MainPage() {
       })
       .catch((err) => {
         //alert(err.response.data.message);
+        setNoticeContent("");
+        setReNoticeContent("");
+        makeTempNoticeContent("");
+        setNoticeId();
       });
   };
   const getNoticeDelete = async () => {
