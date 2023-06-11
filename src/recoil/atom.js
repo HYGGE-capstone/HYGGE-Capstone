@@ -12,6 +12,11 @@ export const userNickNameState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+export const userSchoolNameState = atom({
+  key: "userSchoolName",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
 export const messageToIdState = atom({
   key: "messageToId",
   default: "",

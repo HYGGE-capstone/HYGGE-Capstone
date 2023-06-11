@@ -10,7 +10,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { useridState, userNickNameState } from "../recoil/atom";
+import {
+  useridState,
+  userNickNameState,
+  userSchoolNameState,
+} from "../recoil/atom";
 
 function LoginPage() {
   const [id, setId] = useState("");
@@ -19,6 +23,8 @@ function LoginPage() {
   const [open, setOpen] = React.useState(false);
   const [userId, setUserId] = useRecoilState(useridState);
   const [userNickName, setUserNickName] = useRecoilState(userNickNameState);
+  const [userSchoolName, setUserSchoolName] =
+    useRecoilState(userSchoolNameState);
 
   const navigate = useNavigate();
   const changeId = (event) => {
@@ -56,10 +62,14 @@ function LoginPage() {
         setPwd("");
         setUserId(resp.data.loginId);
         setUserNickName(resp.data.nickname);
+        setUserSchoolName(resp.data.schoolName);
         if (resp.data.role === "ROLE_USER") {
           navigate("/main");
         }
         if (resp.data.role === "ROLE_ADMIN") {
+          navigate("/schoolAdmin");
+        }
+        if (resp.data.loginId === "master" && resp.data.role === "ROLE_ADMIN") {
           navigate("/admin");
         }
       })

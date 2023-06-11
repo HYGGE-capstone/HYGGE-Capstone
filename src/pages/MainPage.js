@@ -12,6 +12,7 @@ import {
   useridState,
   userNickNameState,
   messageToIdState,
+  userSchoolNameState,
 } from "../recoil/atom";
 import axios from "axios";
 import api from "../axios/axios";
@@ -62,6 +63,8 @@ function MainPage() {
   const [userId, setUserId] = useRecoilState(useridState);
   const [userNickName, setUserNickName] = useRecoilState(userNickNameState);
   const [messageToId, setMessageToId] = useRecoilState(messageToIdState);
+  const [userSchoolName, setUserSchoolName] =
+    useRecoilState(userSchoolNameState);
   const [resumeTitle, setResumeTitle] = useState("");
   const [resumeContent, setResumeContent] = useState("");
   const [resumeId, setResumeId] = useState();
@@ -342,6 +345,7 @@ function MainPage() {
         navigate("/login");
         setUserId("");
         setUserNickName("");
+        setUserSchoolName("");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         alert("로그아웃하였습니다.");
@@ -925,7 +929,7 @@ function MainPage() {
     <div className="main-page">
       <div className="main-top">
         <div className="main-wrapper">
-          <div className="top-name">아주좋은팀</div>
+          <div className="top-name">아주좋은팀({userSchoolName})</div>
         </div>
       </div>
       <div className="main-mid">

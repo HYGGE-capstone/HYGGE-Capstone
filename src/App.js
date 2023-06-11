@@ -7,6 +7,7 @@ import MainPage from "./pages/MainPage";
 import ChatPage from "./pages/ChatPage";
 import MessagePage from "./pages/MessagePage";
 import AdminPage from "./admin/AdminPage";
+import SchoolAdminPage from "./admin/SchoolAdminPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/message" element={<MessagePage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/schoolAdmin" element={<SchoolAdminPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1048,6 +1048,16 @@ hr {
   background: #f7f7f7;
 }
 
+.admin-button-top {
+  width: 80%;
+  display: flex;
+}
+
+.admin-button {
+  width: 30%;
+  height: 500px;
+  margin: 50px;
+}
 .admin-mid Button{
   border-radius: 0;
   border-width: 2px;
